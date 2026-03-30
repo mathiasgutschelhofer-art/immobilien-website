@@ -293,9 +293,74 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadAdminListings();
     };
 
+    // --- 5. SYSTEM-REINIGUNG ---
+    const cleanupBtn = document.getElementById('cleanup-storage-btn');
+    const cleanupFeedback = document.getElementById('cleanup-feedback');
+
+    if (cleanupBtn) {
+        cleanupBtn.addEventListener('click', async () => {
+            if (!isAdmin) return;
+            cleanupBtn.disabled = true;
+            cleanupBtn.textContent = "⏳ Analysiere...";
+            cleanupFeedback.textContent = "";
+
+            try {
+                const bucket = 'listing-images';
+                // 1. Alle Dateien im Storage listen (Standard Limit 100)
+                const { data: storageFiles, error: storageErr } = await supabase.storage.from(bucket).list('', { limit: 500 });
+                if (storageErr) throw storageErr;
+
+                // 2. Alle genutzten Bild-URLs aus der DB holen
+                const { data: allListings, error: dbErr } = await supabase.from('listings').select('images');
+                if (dbErr) throw dbErr;
+
+                const usedFiles = new Set();
+                allListings.forEach(l => {
+                    if (l.images) {
+                        l.images.forEach(url => {
+                            // Extrahiere Dateiname nach dem Bucket-Pfad
+                            const parts = url.split('/' + bucket + '/');
+                            if (parts.length > 1) usedFiles.add(parts[1]);
+                        });
+                    }
+                });
+
+                // 3. Verwaiste Dateien identifizieren
+                const orphans = storageFiles
+                    .map(f => f.name)
+                    .filter(name => name !== '.emptyFolderPlaceholder' && !usedFiles.has(name));
+
+                if (orphans.length === 0) {
+                    cleanupFeedback.innerHTML = "✅ Keine verwaisten Bilder gefunden. Speicher ist sauber!";
+                    cleanupBtn.textContent = "🔍 Speicher analysieren & bereinigen";
+                    cleanupBtn.disabled = false;
+                    return;
+                }
+
+                // 4. Löschung nach Bestätigung
+                if (confirm(`Achtung: ${orphans.length} ungenutzte Bilder gefunden. Diese werden physisch vom Cloud-Speicher gelöscht. Fortfahren?`)) {
+                    cleanupFeedback.textContent = `Lösche ${orphans.length} Dateien...`;
+                    const { error: delErr } = await supabase.storage.from(bucket).remove(orphans);
+                    
+                    if (delErr) throw delErr;
+
+                    cleanupFeedback.innerHTML = `✅ ${orphans.length} Bilder erfolgreich entfernt!`;
+                } else {
+                    cleanupFeedback.textContent = "Vorgang abgebrochen.";
+                }
+
+            } catch (err) {
+                console.error("Cleanup Error:", err);
+                cleanupFeedback.textContent = "❌ Fehler: " + err.message;
+            } finally {
+                cleanupBtn.disabled = false;
+                cleanupBtn.textContent = "🔍 Speicher analysieren & bereinigen";
+            }
+        });
+    }
+
     // Initital Load
     loadAdminListings();
     loadAdminReports();
     loadAdminUsers();
-
 });
