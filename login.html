@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | G-Immobilien</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .auth-container { max-width: 400px; margin: 4rem auto; background: var(--white); padding: 2.5rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); }
+        .auth-container h1 { text-align: center; margin-bottom: 2rem; font-size: 1.8rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo-container">
+                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+            </a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
+                    <div class="dropdown-content">
+                        <a href="einstellplaetze.html">Einstellplätze</a>
+                        <a href="parkplaetze.html">Parkplätze</a>
+                        <a href="lagerraeume.html">Lagerräume</a>
+                        <a href="werkstaetten.html">Werkstätten</a>
+                        <a href="tierflaechen.html">Tierflächen</a>
+                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                    </div>
+                </li>
+                <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 2rem; padding-bottom: 5rem;">
+        <div class="auth-container">
+            <h1>Willkommen zurück</h1>
+            <p id="error-msg" style="color: red; margin-bottom: 1rem; text-align: center; font-weight: bold;"></p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Ihre E-Mail</label>
+                    <input type="email" id="email" class="form-control" required placeholder="beispiel@mail.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" class="form-control" required placeholder="********">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Einloggen</button>
+            </form>
+            <div style="text-align: center; margin-top: 2rem; font-size: 0.9rem;">
+                Noch keinen Account? <br>
+                <a href="register.html" style="font-weight: bold; text-decoration: underline;">Jetzt kostenlos registrieren</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col" style="flex: 2;">
+                <h4>G-Immobilien</h4>
+                <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
+            </div>
+            <div class="footer-col" style="flex: 2;">
+                <h4>Rechtliches</h4>
+                <ul>
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutzerklärung</a></li>
+                    <li><a href="agb.html">AGB</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
