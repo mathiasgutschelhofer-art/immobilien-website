@@ -24,6 +24,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text-primary);
@@ -530,10 +535,14 @@ footer {
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1050;
     align-items: flex-start;
+    visibility: hidden; /* Prevent interaction when hidden */
+    opacity: 0;
   }
   
   .nav-links.active {
     right: 0;
+    visibility: visible;
+    opacity: 1;
   }
 
   .nav-links li {
@@ -555,6 +564,12 @@ footer {
   
   #hero-search-form > div {
       flex: 1 1 100% !important;
+      min-width: 100% !important; /* Force stack on very small screens */
+  }
+
+  .search-container {
+      margin: 2rem 0 !important;
+      width: 100%;
   }
 
   .properties-grid {
@@ -653,6 +668,7 @@ footer {
 .carousel-wrapper {
     position: relative;
     margin: 1rem 0;
+    overflow: hidden; /* Prevent track from causing page width issues */
 }
 
 .carousel-track {
@@ -664,6 +680,7 @@ footer {
     padding: 1rem 0.5rem 2rem 0.5rem;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
+    width: 100%;
 }
 
 .carousel-track::-webkit-scrollbar {
