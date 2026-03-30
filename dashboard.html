@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Dashboard | G-Immobilien</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-box { background: #fff3e0; border: 2px solid #ffb74d; border-radius: var(--border-radius); padding: 2rem; margin-bottom: 3rem; }
+        .admin-header { background: #f57c00; color: white; padding: 0.5rem 1rem; border-radius: 4px; display: inline-block; font-weight: bold; margin-bottom: 1rem; }
+        .listing-info p { margin-bottom: 0.3rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+            </a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
+                    <div class="dropdown-content">
+                        <a href="einstellplaetze.html">Einstellplätze</a>
+                        <a href="parkplaetze.html">Parkplätze</a>
+                        <a href="lagerraeume.html">Lagerräume</a>
+                        <a href="werkstaetten.html">Werkstätten</a>
+                        <a href="tierflaechen.html">Tierflächen</a>
+                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 2rem; min-height: 60vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h1 class="section-title" style="margin-bottom: 0; text-align: left;">Mein Dashboard</h1>
+            <button id="open-listing-modal-btn" class="btn btn-primary">+ Neues Inserat eintragen</button>
+        </div>
+        
+        <h2 style="margin-bottom: 1rem;">Meine eigenen Inserate</h2>
+        <div id="user-listings-container" class="properties-grid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                <p>Lade eigene Inserate...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Formular für neues Inserat -->
+    <div id="listing-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="modal-close">&times;</button>
+            <div id="modal-header-texts">
+                <h2 style="margin-top: 0; color: var(--primary-color);">Neues Inserat erstellen</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+                    Füllen Sie die Details gewissenhaft aus. Ihr Inserat wird vor Veröffentlichung geprüft.
+                </p>
+            </div>
+            
+            <form id="new-listing-form">
+                <input type="hidden" id="edit-listing-id" value="">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="list-title">Titel des Inserats (max. 200 Zeichen) *</label>
+                        <input type="text" id="list-title" class="form-control" maxlength="200" required placeholder="z.B. Helle Pferdebox">
+                    </div>
+                    <div class="form-group">
+                        <label for="list-category">Kategorie *</label>
+                        <select id="list-category" class="form-control" required>
+                            <option value="">Bitte wählen...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 1rem; margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Standort</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="list-country">Land *</label>
+                        <select id="list-country" class="form-control" required>
+                            <option value="Österreich">Österreich</option>
+                            <option value="Deutschland">Deutschland</option>
+                            <option value="Schweiz">Schweiz</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="list-street">Straße & Hausnummer (Optional)</label>
+                        <input type="text" id="list-street" class="form-control" placeholder="z.B. Mustergasse 4">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="list-zip">PLZ *</label>
+                        <input type="text" id="list-zip" class="form-control" required pattern="[0-9]{4,5}" title="4 oder 5 stellige Postleitzahl" placeholder="8605">
+                    </div>
+                    <div class="form-group" style="flex: 2;">
+                        <label for="list-city">Ort *</label>
+                        <input type="text" id="list-city" class="form-control" required placeholder="Parschlug">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 1rem; margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Kosten</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="list-price">Preis (in €) *</label>
+                        <input type="number" id="list-price" class="form-control" required min="1" placeholder="z.B. 150">
+                    </div>
+                    <div class="form-group">
+                        <label for="list-interval">Abrechnungsintervall *</label>
+                        <select id="list-interval" class="form-control" required>
+                            <option value="Monat">Miete / Monat</option>
+                            <option value="Jahr">Pacht / Jahr</option>
+                            <option value="Einmalig">Kaufpreis (Einmalig)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="list-desc">Beschreibung (max. 2000 Zeichen) *</label>
+                    <textarea id="list-desc" class="form-control" rows="5" maxlength="2000" required placeholder="Beschreiben Sie Ihr Objekt detailliert..."></textarea>
+                    <div style="text-align: right; font-size: 0.8rem; color: #888;" id="char-count">0 / 2000</div>
+                </div>
+
+                <div class="form-group" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px dashed #ccc;">
+                    <label for="list-images" style="margin-bottom: 0.5rem;">Bilder hochladen (Max. 3 Bilder à 2 MB)</label>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Erlaubte Formate: JPG, PNG, WEBP.</p>
+                    <input type="file" id="list-images" accept="image/png, image/jpeg, image/webp" multiple>
+                    <div id="image-error-msg" style="color: red; font-weight: bold; font-size: 0.9rem; margin-top: 0.5rem; display: none;"></div>
+                    <div id="preview-container" class="image-preview-container"></div>
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: start; gap: 10px; margin-top: 1.5rem;">
+                    <input type="checkbox" id="list-agb-check" required style="margin-top: 5px;">
+                    <label for="list-agb-check" style="font-weight: normal; font-size: 0.9rem;">Ich habe die <a href="agb.html" target="_blank" style="text-decoration: underline;">AGB</a> gelesen, stimme den Bedingungen zu und bestätige, dass ich alle Rechte an den hochgeladenen Inhalten besitze.</label>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <button type="submit" id="submit-listing-btn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">Inserat zur Freigabe einreichen</button>
+                </div>
+            </form>
+            <div id="form-feedback-msg" class="msg-box" style="margin-top: 2rem; margin-bottom: 1rem; display: none;"></div>
+        </div>
+    <!-- Teilen Modal -->
+    <div id="share-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <button id="close-share-btn" class="modal-close">&times;</button>
+            <h2 id="share-modal-title" style="margin-top: 0; color: var(--primary-color);">Inserat teilen</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+                Teilen Sie Ihr Inserat, um mehr Interessenten zu erreichen.
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <button id="share-copy-btn" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 1px solid #ccc; cursor: pointer; background: #f8fafc;">
+                    <span style="font-size: 1.2rem;">📋</span> Link kopieren
+                </button>
+                <a id="share-fb-btn" href="#" target="_blank" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #1877F2; border: none; color: white; text-decoration: none;">
+                    <span style="font-size: 1.2rem;">📘</span> Auf Facebook teilen
+                </a>
+                <a id="share-wa-btn" href="#" target="_blank" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #25D366; border: none; color: white; text-decoration: none;">
+                    <span style="font-size: 1.2rem;">💬</span> WhatsApp
+                </a>
+                <a id="share-email-btn" href="#" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 1px solid #ccc; text-decoration: none;">
+                    <span style="font-size: 1.2rem;">📧</span> Per E-Mail senden
+                </a>
+            </div>
+            <p id="share-feedback" style="color: green; margin-top: 1rem; display: none; margin-bottom: 0; font-weight: bold;">Link in die Zwischenablage kopiert!</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col" style="flex: 2;">
+                <h4>G-Immobilien</h4>
+                <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
+            </div>
+            <div class="footer-col" style="flex: 2;">
+                <h4>Rechtliches</h4>
+                <ul>
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutzerklärung</a></li>
+                    <li><a href="agb.html">AGB</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
