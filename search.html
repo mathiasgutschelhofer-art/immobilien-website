@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suchergebnisse | G-Immobilien</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+            </a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
+                    <div class="dropdown-content">
+                        <a href="einstellplaetze.html">Einstellplätze</a>
+                        <a href="parkplaetze.html">Parkplätze</a>
+                        <a href="lagerraeume.html">Lagerräume</a>
+                        <a href="werkstaetten.html">Werkstätten</a>
+                        <a href="tierflaechen.html">Tierflächen</a>
+                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 2rem; min-height: 60vh;">
+        <h1 class="section-title">Suchergebnisse</h1>
+        
+        <div class="search-container" style="background: rgba(0,0,0,0.03); padding: 1.5rem; border-radius: 8px; max-width: 800px; margin: 0 auto 3rem auto;">
+            <form action="search.html" method="GET" id="hero-search-form" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 200px;">
+                    <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box;">
+                </div>
+                <div style="flex: 2; min-width: 150px;">
+                    <select name="kategorie" id="search-category" style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; background: white; box-sizing: border-box;">
+                        <option value="">Alle Kategorien</option>
+                        <option value="Einstellplätze">Einstellplätze</option>
+                        <option value="Parkplätze">Parkplätze</option>
+                        <option value="Lagerräume">Lagerräume</option>
+                        <option value="Werkstätten">Werkstätten</option>
+                        <option value="Tierflächen">Tierflächen</option>
+                        <option value="Garten & Outdoor">Garten & Outdoor</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 120px;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1rem; border-radius: 4px; width: 100%; height: 100%; box-sizing: border-box;">Erneut Suchen</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="search-results-container" class="properties-grid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                <p>Suche läuft...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-bottom" style="margin-top: 0;">
+            &copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>
