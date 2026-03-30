@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G-Immobilien | Der Nischen-Marktplatz</title>
+    <title>G-Immobilien | Der Marktplatz für Spezial- & Nischenimmobilien</title>
+    <meta name="description" content="Finden Sie Einstellplätze, Garagen, Pferdeboxen und Freiflächen auf G-Immobilien. Der führende Marktplatz für extreme Nischenimmobilien – seriös, einfach und provisionsfrei.">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -41,7 +42,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" style="background-image: linear-gradient(rgba(13, 71, 161, 0.7), rgba(13, 71, 161, 0.7)), url('assets/hero-bg.jpg');">
+    <section class="hero" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(13, 71, 161, 0.8)), url('assets/hero-bg.jpg') center/cover no-repeat, radial-gradient(circle at top right, #1e3a8a, #0d47a1);">
         <div class="hero-content">
             <h1>Der Marktplatz für die extremen Nischen</h1>
             <p>Einstellplätze, Garagen, Pferdeboxen und Freiflächen. Finden Sie genau das, was auf anderen Plattformen gnadenlos untergeht.</p>
@@ -86,8 +87,12 @@
                 <h2>Einstellplätze</h2>
                 <a href="einstellplaetze.html">Alle ansehen &rarr;</a>
             </div>
-            <div class="properties-grid dynamic-category-grid" data-category="Einstellplätze" style="grid-template-columns: repeat(3, 1fr);">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Lade Inserate...</div>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
+                <div class="carousel-track dynamic-category-grid" data-category="Einstellplätze">
+                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                </div>
+                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
@@ -97,8 +102,12 @@
                 <h2>Parkplätze</h2>
                 <a href="parkplaetze.html">Alle ansehen &rarr;</a>
             </div>
-            <div class="properties-grid dynamic-category-grid" data-category="Parkplätze" style="grid-template-columns: repeat(3, 1fr);">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Lade Inserate...</div>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
+                <div class="carousel-track dynamic-category-grid" data-category="Parkplätze">
+                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                </div>
+                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
@@ -108,8 +117,12 @@
                 <h2>Lagerräume</h2>
                 <a href="lagerraeume.html">Alle ansehen &rarr;</a>
             </div>
-            <div class="properties-grid dynamic-category-grid" data-category="Lagerräume" style="grid-template-columns: repeat(3, 1fr);">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Lade Inserate...</div>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
+                <div class="carousel-track dynamic-category-grid" data-category="Lagerräume">
+                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                </div>
+                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
         
@@ -119,8 +132,12 @@
                 <h2>Werkstätten</h2>
                 <a href="werkstaetten.html">Alle ansehen &rarr;</a>
             </div>
-            <div class="properties-grid dynamic-category-grid" data-category="Werkstätten" style="grid-template-columns: repeat(3, 1fr);">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Lade Inserate...</div>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
+                <div class="carousel-track dynamic-category-grid" data-category="Werkstätten">
+                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                </div>
+                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
@@ -130,8 +147,12 @@
                 <h2>Pferdeboxen & Tierflächen</h2>
                 <a href="tierflaechen.html">Alle ansehen &rarr;</a>
             </div>
-            <div class="properties-grid dynamic-category-grid" data-category="Tierflächen" style="grid-template-columns: repeat(3, 1fr);">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Lade Inserate...</div>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
+                <div class="carousel-track dynamic-category-grid" data-category="Tierflächen">
+                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                </div>
+                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
@@ -141,8 +162,12 @@
                 <h2>Garten & Outdoorflächen</h2>
                 <a href="outdoorflaechen.html">Alle ansehen &rarr;</a>
             </div>
-            <div class="properties-grid dynamic-category-grid" data-category="Garten & Outdoor" style="grid-template-columns: repeat(3, 1fr);">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Lade Inserate...</div>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
+                <div class="carousel-track dynamic-category-grid" data-category="Garten & Outdoor">
+                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                </div>
+                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 

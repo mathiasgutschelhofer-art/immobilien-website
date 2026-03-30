@@ -25,12 +25,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             .eq('status', 'active')
             .order('created_at', { ascending: false });
 
+        const isPlz = /^\d{4,5}$/.test(searchOrt.trim());
+
         if (searchKat) {
             query = query.eq('category', searchKat);
         }
 
-        if (searchOrt) {
-            // Sucht in city oder zip (Groß/Kleinschreibung egalisiert mit ilike)
+        if (searchOrt && !isPlz) {
+            // Nur wenn es KEINE PLZ ist, filtern wir strikt auf den Textwert (Stadt/PLZ-Teil)
             query = query.or(`city.ilike.%${searchOrt}%,zip.ilike.%${searchOrt}%`);
         }
 
@@ -52,10 +54,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        // --- DISTANZ-LOGIK ---
+        let sortedListings = [...listings];
+        let searchCoords = null;
+
+        if (isPlz && window.Geocoding) {
+            searchCoords = await window.Geocoding.getCoordinates(searchOrt);
+            
+            if (searchCoords) {
+                // Berechne Distanz für jedes Inserat
+                for (let item of sortedListings) {
+                    const itemCoords = await window.Geocoding.getCoordinates(item.zip);
+                    if (itemCoords) {
+                        item.distance = window.Geocoding.calculateDistance(
+                            searchCoords.lat, searchCoords.lng,
+                            itemCoords.lat, itemCoords.lng
+                        );
+                    } else {
+                        item.distance = 99999;
+                    }
+                }
+                // Sortieren nach Distanz
+                sortedListings.sort((a, b) => a.distance - b.distance);
+            } else {
+                // FALLBACK: PLZ wurde geografisch nicht gefunden -> Filtere manuell nach Text
+                sortedListings = listings.filter(item => 
+                    item.zip.includes(searchOrt.trim()) || 
+                    item.city.toLowerCase().includes(searchOrt.toLowerCase().trim())
+                );
+            }
+        }
+
         container.innerHTML = '';
         
-        listings.forEach(item => {
-            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/0d47a1/ffffff?text=G-Immobilien';
+        sortedListings.forEach(item => {
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80&w=800';
             const exposeUrl = `expose.html?id=${item.id}`;
             
             const currentDate = new Date();
@@ -70,12 +103,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 daysBadge = `<div style="position: absolute; top: 10px; right: 10px; background: rgba(200, 0, 0, 0.9); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); z-index: 10;">Läuft ab</div>`;
             }
+
+            // Distanz-Badge erstellen
+            let distanceHtml = '';
+            if (item.distance !== undefined && item.distance < 9999) {
+                distanceHtml = `<div class="distance-badge">📍 ${item.distance.toFixed(1)} km entfernt</div>`;
+            }
             
             container.innerHTML += `
-                <div class="property-card" style="position: relative; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--box-shadow)';" onclick="window.location.href='${exposeUrl}'">
+                <div class="property-card" style="position: relative; cursor: pointer; transition: all 0.2s ease;" onclick="window.location.href='${exposeUrl}'">
                     ${daysBadge}
                     <img src="${imgUrl}" alt="${item.title}" class="property-img">
                     <div class="property-content">
+                        ${distanceHtml}
                         <div class="property-price">${item.price} € / ${item.price_interval}</div>
                         <h3 class="property-title">${item.title}</h3>
                         <div class="property-details">

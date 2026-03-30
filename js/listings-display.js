@@ -60,8 +60,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Dummy-Kacheln durch echte Kacheln ersetzen
         container.innerHTML = '';
         
+        // Navigation Buttons finden (falls vorhanden)
+        const wrapper = container.closest('.carousel-wrapper');
+        const prevBtn = wrapper ? wrapper.querySelector('.carousel-btn.prev') : null;
+        const nextBtn = wrapper ? wrapper.querySelector('.carousel-btn.next') : null;
+
+        if (listings.length > 3 && prevBtn && nextBtn) {
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+            
+            // Event Listener für Scroll-Buttons (nur einmal hinzufügen)
+            if (!prevBtn.dataset.listener) {
+                prevBtn.addEventListener('click', () => {
+                    if (container.scrollLeft <= 5) {
+                        // Springe zum Ende
+                        container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+                    } else {
+                        container.scrollBy({ left: -container.offsetWidth * 0.8, behavior: 'smooth' });
+                    }
+                });
+                nextBtn.addEventListener('click', () => {
+                    if (container.scrollLeft + container.offsetWidth >= container.scrollWidth - 10) {
+                        // Springe zum Anfang
+                        container.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        container.scrollBy({ left: container.offsetWidth * 0.8, behavior: 'smooth' });
+                    }
+                });
+                prevBtn.dataset.listener = 'true';
+            }
+        }
+
         listings.forEach(item => {
-            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/0d47a1/ffffff?text=G-Immobilien';
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80&w=800';
             const exposeUrl = `expose.html?id=${item.id}`;
             
             const currentDate = new Date();
@@ -77,23 +108,34 @@ document.addEventListener('DOMContentLoaded', async () => {
                 daysBadge = `<div style="position: absolute; top: 10px; right: 10px; background: rgba(200, 0, 0, 0.9); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); z-index: 10;">Läuft ab</div>`;
             }
             
-            container.innerHTML += `
-                <div class="property-card" style="position: relative; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--box-shadow)';" onclick="window.location.href='${exposeUrl}'">
+            const cardHtml = `
+                <div class="property-card" style="position: relative; cursor: pointer; transition: var(--transition); height: 100%;" onclick="window.location.href='${exposeUrl}'">
                     ${daysBadge}
-                    <img src="${imgUrl}" alt="${item.title}" class="property-img">
+                    <div class="property-img-wrapper" style="overflow: hidden; height: 220px;">
+                        <img src="${imgUrl}" alt="${item.title}" class="property-img" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    </div>
                     <div class="property-content">
                         <div class="property-price">${item.price} € / ${item.price_interval}</div>
-                        <h3 class="property-title">${item.title}</h3>
-                        <div class="property-details">
-                            <div class="detail-item" style="font-size: 0.8rem; font-weight: bold;">📍 ${item.zip} ${item.city}</div>
+                        <h3 class="property-title" style="font-size: 1.1rem; margin-bottom: 0.8rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">${item.title}</h3>
+                        <div class="property-details" style="margin-bottom: 1rem; padding: 0.5rem 0;">
+                            <div class="detail-item" style="font-size: 0.75rem;">📍 ${item.zip} ${item.city}</div>
                         </div>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; height: 3.8em;">
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8em;">
                             ${item.description}
                         </p>
-                        <a href="${exposeUrl}" class="btn btn-primary" style="display: block; width: 100%; text-align: center;">Details ansehen</a>
+                        <a href="${exposeUrl}" class="btn btn-primary" style="display: block; width: 100%; text-align: center; padding: 0.6rem; font-size: 0.9rem;">Details</a>
                     </div>
                 </div>
             `;
+
+            if (container.classList.contains('carousel-track')) {
+                const carouselItem = document.createElement('div');
+                carouselItem.className = 'carousel-item';
+                carouselItem.innerHTML = cardHtml;
+                container.appendChild(carouselItem);
+            } else {
+                container.innerHTML += cardHtml;
+            }
         });
     }
 });

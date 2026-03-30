@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -39,14 +39,17 @@
         <div class="auth-container">
             <h1>Willkommen zurück</h1>
             <p id="error-msg" style="color: red; margin-bottom: 1rem; text-align: center; font-weight: bold;"></p>
-            <form id="login-form">
+            <form id="login-form" action="#">
                 <div class="form-group">
                     <label for="email">Ihre E-Mail</label>
-                    <input type="email" id="email" class="form-control" required placeholder="beispiel@mail.com">
+                    <input type="email" id="email" name="email" autocomplete="username" class="form-control" required placeholder="beispiel@mail.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Passwort</label>
-                    <input type="password" id="password" class="form-control" required placeholder="********">
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="password" id="password" name="password" autocomplete="current-password" class="form-control" required placeholder="********" style="padding-right: 40px; width: 100%;">
+                        <button type="button" aria-label="Passwort anzeigen" onclick="const p = document.getElementById('password'); if(p.type === 'password') { p.type = 'text'; this.textContent = '🙈'; } else { p.type = 'password'; this.textContent = '👁️'; }" style="position: absolute; right: 10px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #555; padding: 0; outline: none;">👁️</button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Einloggen</button>
             </form>

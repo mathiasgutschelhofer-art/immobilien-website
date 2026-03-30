@@ -309,35 +309,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(zipInput.value.trim().length >= 4) fetchCityFromZip();
     });
 
-    // --- 4. BILDER VALIDATION & PREVIEW ---
+    // --- 4. BILDER VALIDATION & PREVIEW (Optimiert mit Drag & Drop) ---
     const imageInput = document.getElementById('list-images');
+    const dropZone = document.getElementById('drop-zone');
     const errorMsg = document.getElementById('image-error-msg');
     const previewContainer = document.getElementById('preview-container');
     let validFiles = [];
 
-    imageInput.addEventListener('change', () => {
+    // Zentrale Funktion zur Dateiverarbeitung
+    function handleFiles(files) {
         errorMsg.style.display = 'none';
+        
+        // Wir setzen die Dateien nicht komplett zurück, falls der Nutzer nacheinander auswählt? 
+        // Nein, wir folgen der Logik: Eine Auswahl ersetzt die vorherige (wie beim <input> Standard).
         previewContainer.innerHTML = '';
         validFiles = [];
         
-        const files = Array.from(imageInput.files);
-        if (files.length > 3) {
+        const filesArray = Array.from(files);
+        
+        if (filesArray.length > 3) {
             errorMsg.style.display = 'block';
             errorMsg.textContent = 'Um unseren Service kostenlos anzubieten, beschränken wir Uploads auf max. 3 Bilder.';
-            imageInput.value = ''; return;
+            imageInput.value = ''; 
+            return;
         }
 
-        const MAX_SIZE = 2 * 1024 * 1024;
+        // Limit auf 10 MB erhöht (pre-compression)
+        const MAX_SIZE = 10 * 1024 * 1024;
         let hasOversized = false;
-        files.forEach(f => { if (f.size > MAX_SIZE) hasOversized = true; });
+        filesArray.forEach(f => { if (f.size > MAX_SIZE) hasOversized = true; });
 
         if (hasOversized) {
             errorMsg.style.display = 'block';
-            errorMsg.textContent = 'Bilder überschreiten das 2 MB Limit!';
-            imageInput.value = ''; return;
+            errorMsg.textContent = 'Ein oder mehrere Bilder überschreiten das 10 MB Limit!';
+            imageInput.value = ''; 
+            return;
         }
 
-        validFiles = files;
+        validFiles = filesArray;
         validFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -348,6 +357,46 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
             reader.readAsDataURL(file);
         });
+    }
+
+    // Input Change Event
+    imageInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    // Drag & Drop Events
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+            dropZone.classList.add('drag-active');
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+            dropZone.classList.remove('drag-active');
+        }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+        // Synchronisiere das Input-Feld, damit es die gedroppten Dateien "kennt" (optional, aber sauberer)
+        imageInput.files = files;
+    });
+
+    // Erlaube Klick auf die gesamte Drop-Zone zum Öffnen des File-Dialogs (außer wenn direkt auf Input geklickt wird)
+    dropZone.addEventListener('click', (e) => {
+        if (e.target !== imageInput) {
+            imageInput.click();
+        }
     });
 
     // --- BILD-KOMPRIMIERUNGS-HELFER ---

@@ -519,3 +519,96 @@ footer {
 .image-preview-container { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
 .image-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; }
 
+/* Drag and Drop Active Class */
+.drag-active {
+    border-color: var(--primary-light) !important;
+    background-color: #f0f7ff !important;
+    transform: scale(1.02);
+    transition: var(--transition);
+}
+
+/* Carousel Styling */
+.carousel-wrapper {
+    position: relative;
+    margin: 1rem 0;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 1rem 0.5rem 2rem 0.5rem;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.carousel-item {
+    flex: 0 0 calc(33.333% - 1rem); /* 3 Spalten auf Desktop */
+    scroll-snap-align: start;
+    min-width: 320px;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: calc(50% - 1rem);
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: var(--white);
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: var(--transition);
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.carousel-btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev { left: -22px; }
+.carousel-btn.next { right: -22px; }
+
+@media (max-width: 1024px) {
+    .carousel-item { flex: 0 0 calc(50% - 0.75rem); }
+}
+
+@media (max-width: 768px) {
+    .carousel-item { flex: 0 0 85%; }
+    .carousel-btn { display: none; } /* On mobile, we swipe */
+}
+
+/* Umkreissuche: Distanz-Badge */
+.distance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0f7ff;
+    color: #0056b3;
+    padding: 0.4rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border: 1px solid #cce5ff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.distance-badge i {
+    font-style: normal;
+}
+

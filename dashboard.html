@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Dashboard | G-Immobilien</title>
+    <title>Mein Dashboard | Inserate verwalten | G-Immobilien</title>
+    <meta name="description" content="Verwalten Sie Ihre Inserate für Nischenimmobilien. Einfacher Upload, Drag-and-Drop und schnelle Bearbeitung Ihrer Anzeigen auf G-Immobilien.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
@@ -19,6 +20,7 @@
                 <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
             </a>
             <ul class="nav-links">
+                <li><a href="index.html">Startseite</a></li>
                 <li class="dropdown">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
@@ -122,10 +124,10 @@
                     <div style="text-align: right; font-size: 0.8rem; color: #888;" id="char-count">0 / 2000</div>
                 </div>
 
-                <div class="form-group" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px dashed #ccc;">
-                    <label for="list-images" style="margin-bottom: 0.5rem;">Bilder hochladen (Max. 3 Bilder à 2 MB)</label>
-                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Erlaubte Formate: JPG, PNG, WEBP.</p>
-                    <input type="file" id="list-images" accept="image/png, image/jpeg, image/webp" multiple>
+                <div id="drop-zone" class="form-group" style="background: #f8f9fa; padding: 1.5rem; border-radius: var(--border-radius-sm); border: 2px dashed #ccc; transition: var(--transition); cursor: pointer;">
+                    <label for="list-images" style="margin-bottom: 0.5rem; cursor: pointer;">Bilder hochladen (Max. 3 Bilder à 10 MB)</label>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Tipp: Fotos direkt vom Handy machen oder Dateien hierher ziehen.</p>
+                    <input type="file" id="list-images" accept="image/*" multiple style="display: block; width: 100%;">
                     <div id="image-error-msg" style="color: red; font-weight: bold; font-size: 0.9rem; margin-top: 0.5rem; display: none;"></div>
                     <div id="preview-container" class="image-preview-container"></div>
                 </div>
