@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exposé | G-Immobilien</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .expose-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .gallery-main { width: 100%; height: 400px; object-fit: cover; border-radius: var(--border-radius); border: 1px solid #ddd; margin-bottom: 1rem; }
+        .gallery-thumbs { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; }
+        .gallery-thumbs img { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: all 0.3s; }
+        .gallery-thumbs img:hover, .gallery-thumbs img.active { border-color: var(--secondary-color); opacity: 1; }
+        
+        .expose-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+        .price-box { background: white; border: 1px solid #ddd; border-radius: var(--border-radius); padding: 2rem; text-align: center; box-shadow: var(--box-shadow); }
+        .price-value { font-size: 2.5rem; color: var(--primary-color); font-weight: 800; margin-bottom: 0.5rem; }
+        
+        .detail-row { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 0.8rem 0; }
+        .detail-row span:first-child { color: var(--text-secondary); }
+        .detail-row span:last-child { font-weight: 600; }
+
+        @media(max-width: 900px) {
+            .expose-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+            </a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
+                    <div class="dropdown-content">
+                        <a href="einstellplaetze.html">Einstellplätze</a>
+                        <a href="parkplaetze.html">Parkplätze</a>
+                        <a href="lagerraeume.html">Lagerräume</a>
+                        <a href="werkstaetten.html">Werkstätten</a>
+                        <a href="tierflaechen.html">Tierflächen</a>
+                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 2rem; min-height: 60vh;">
+        <div id="expose-loading" style="text-align: center; padding: 4rem;">
+            <h2>Lade Exposé...</h2>
+        </div>
+        
+        <div id="expose-content" style="display: none;">
+            <!-- Oben: Header / Zurück -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                <div>
+                    <a href="javascript:history.back()" style="color: var(--text-secondary); text-decoration: underline; margin-bottom: 0.5rem; display: inline-block;">&larr; Zurück</a>
+                    <h1 id="expose-title" style="margin: 0; font-size: 2rem;">-</h1>
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button id="btn-share" class="btn btn-secondary" style="background: #e1f5fe; color: #0288d1; border: 1px solid #b3e5fc; display: flex; align-items: center; gap: 0.5rem;">
+                        <span id="share-icon">📤</span> <span id="share-text">Teilen</span>
+                    </button>
+                    <button id="btn-favorite" class="btn btn-secondary" style="background: #f1f3f5; color: var(--text-color); border: 1px solid #ccc; display: flex; align-items: center; gap: 0.5rem;">
+                        <span id="fav-icon">🤍</span> <span id="fav-text">Merken</span>
+                    </button>
+                    <button id="btn-report" class="btn btn-secondary" style="background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2; display: flex; align-items: center; gap: 0.5rem;">
+                        <span id="report-icon">🚩</span> <span id="report-text">Melden</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hauptlayout -->
+            <div class="expose-layout">
+                
+                <!-- Links: Galerie & Beschreibung -->
+                <div>
+                    <div id="gallery-container">
+                        <img id="main-image" src="" alt="Hauptbild" class="gallery-main" onerror="this.src='https://placehold.co/1200x800/eeeeee/aaaaaa?text=Kein+Bild'">
+                        <div id="thumbnails" class="gallery-thumbs"></div>
+                    </div>
+
+                    <div style="background: white; padding: 2rem; border-radius: var(--border-radius); border: 1px solid #ddd; margin-top: 2rem;">
+                        <h3 style="margin-top: 0; border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; display: inline-block;">Ausführliche Beschreibung</h3>
+                        <p id="expose-desc" style="white-space: pre-line; line-height: 1.8; color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+
+                <!-- Rechts: Sidebar mit Infos & Kontakt -->
+                <div class="expose-sidebar">
+                    <div class="price-box">
+                        <div class="price-value"><span id="expose-price">-</span> €</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">pro <span id="expose-interval">-</span></div>
+                        
+                        <div style="text-align: left; margin-bottom: 2rem;">
+                            <div class="detail-row">
+                                <span>Kategorie</span>
+                                <span id="expose-cat">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Postleitzahl</span>
+                                <span id="expose-zip">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Ort</span>
+                                <span id="expose-city">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Land</span>
+                                <span id="expose-country">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Inserats-ID</span>
+                                <span id="expose-id" style="font-size: 0.7rem; color: #888;">-</span>
+                            </div>
+                        </div>
+
+                        <button id="open-contact-btn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">Nachricht an Anbieter schreiben</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Kontakt Modal (für Edge Function Mail) -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <button id="close-contact-btn" class="modal-close">&times;</button>
+            <h2 style="margin-top: 0; color: var(--primary-color);">Kontaktanfrage</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+                Schreiben Sie dem Anbieter eine Nachricht. Ihre E-Mail-Adresse und Telefonnummer wird automatisch übermittelt.
+            </p>
+            
+            <form id="contact-form">
+                <div class="form-group">
+                    <label>Ihr Name</label>
+                    <input type="text" id="contact-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Ihre E-Mail</label>
+                    <input type="email" id="contact-email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Ihre Telefonnummer (optional)</label>
+                    <input type="text" id="contact-phone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Ihre Nachricht</label>
+                    <textarea id="contact-message" class="form-control" rows="5" required placeholder="Ich interessiere mich für Ihr Inserat und hätte gerne weitere Informationen..."></textarea>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <p id="contact-feedback" class="msg-box" style="display: none;"></p>
+                    <button type="submit" id="submit-contact-btn" class="btn btn-primary" style="width: 100%;">Anbieter kontaktieren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Melden Modal -->
+    <div id="report-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <button id="close-report-btn" class="modal-close">&times;</button>
+            <h2 style="margin-top: 0; color: #d32f2f;">Anzeige melden</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+                Bitte beschreiben Sie den Sachverhalt kurz (max. 200 Zeichen). Wir werden den Fall schnellstmöglich prüfen. Das unberechtigte Melden von Anzeigen kann Konsequenzen haben.
+            </p>
+            
+            <form id="report-form">
+                <div class="form-group">
+                    <label>Grund für die Meldung</label>
+                    <textarea id="report-reason" class="form-control" rows="4" maxlength="200" required placeholder="Bitte beschreiben Sie hier kurz und sachlich das Problem..."></textarea>
+                    <div style="text-align: right; font-size: 0.8rem; color: #888;" id="report-char-count">0 / 200</div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <p id="report-feedback" class="msg-box" style="display: none;"></p>
+                    <button type="submit" id="submit-report-btn" class="btn btn-secondary" style="width: 100%; background: #d32f2f; color: white; border: none;">Meldung einreichen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Teilen Modal -->
+    <div id="share-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <button id="close-share-btn" class="modal-close">&times;</button>
+            <h2 style="margin-top: 0; color: var(--primary-color);">Inserat teilen</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+                Teilen Sie dieses Inserat in Ihrem Netzwerk.
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <button id="share-copy-btn" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 1px solid #ccc; cursor: pointer; background: #f8fafc;">
+                    <span style="font-size: 1.2rem;">📋</span> Link kopieren
+                </button>
+                <a id="share-fb-btn" href="#" target="_blank" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #1877F2; border: none; color: white; text-decoration: none;">
+                    <span style="font-size: 1.2rem;">📘</span> Auf Facebook teilen
+                </a>
+                <a id="share-wa-btn" href="#" target="_blank" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #25D366; border: none; color: white; text-decoration: none;">
+                    <span style="font-size: 1.2rem;">💬</span> WhatsApp
+                </a>
+                <a id="share-email-btn" href="#" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 1px solid #ccc; text-decoration: none;">
+                    <span style="font-size: 1.2rem;">📧</span> Per E-Mail senden
+                </a>
+            </div>
+            <p id="share-feedback" style="color: green; margin-top: 1rem; display: none; margin-bottom: 0; font-weight: bold;">Link in die Zwischenablage kopiert!</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-bottom" style="margin-top: 3rem;">
+            &copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/expose.js"></script>
+</body>
+</html>
