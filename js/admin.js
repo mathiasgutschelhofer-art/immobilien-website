@@ -249,10 +249,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             usersContainer.innerHTML += `
                 <tr>
                     <td><div style="width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center;">👤</div></td>
-                    <td><strong>${u.name}</strong><br><span style="font-size:0.8rem; color:#888;">Inserate: ${u.listed_count}</span></td>
-                    <td>${u.email}<br>${statusBadge}</td>
-                    <td style="font-size:0.75rem; color:#888;">${u.id}</td>
-                    <td style="display: flex; gap: 5px; align-items: center;">${btnAction}</td>
+                    <td data-label="Name"><strong>${u.name}</strong><br><span style="font-size:0.8rem; color:#888;">Inserate: ${u.listed_count}</span></td>
+                    <td data-label="Kontakt">${u.email}<br>${statusBadge}</td>
+                    <td data-label="Profil ID" style="font-size:0.75rem; color:#888;">${u.id}</td>
+                    <td data-label="Aktionen" style="display: flex; gap: 5px; align-items: center; justify-content: flex-end;">${btnAction}</td>
                 </tr>
             `;
         });
@@ -364,3 +364,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadAdminReports();
     loadAdminUsers();
 });
+

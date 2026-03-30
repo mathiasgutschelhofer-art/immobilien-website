@@ -24,6 +24,11 @@
             <a href="index.html" class="logo-container">
                 <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
             </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li class="dropdown">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
@@ -46,15 +51,15 @@
         <div class="hero-content">
             <h1>Der Marktplatz für die extremen Nischen</h1>
             <p>Einstellplätze, Garagen, Pferdeboxen und Freiflächen. Finden Sie genau das, was auf anderen Plattformen gnadenlos untergeht.</p>
-            <div class="search-container" style="background: rgba(255,255,255,0.95); padding: 0.6rem; border-radius: 50px; max-width: 850px; margin: 3rem auto; box-shadow: 0 20px 40px rgba(0,0,0,0.25); backdrop-filter: blur(10px);">
-                <form action="search.html" method="GET" id="hero-search-form" style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: stretch;">
-                    <div style="flex: 2; min-width: 200px; position: relative;">
-                        <span style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">📍</span>
-                        <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; height: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid transparent; background: rgba(0,0,0,0.04); border-radius: 50px; font-size: 1rem; box-sizing: border-box; outline: none; transition: background 0.3s;" onfocus="this.style.background='white'; this.style.borderColor='var(--primary-light)';">
+            <div class="search-container" style="background: rgba(255,255,255,0.95); padding: 1.5rem; border-radius: var(--border-radius); max-width: 900px; margin: 3rem auto; box-shadow: 0 20px 40px rgba(0,0,0,0.25); backdrop-filter: blur(10px);">
+                <form action="search.html" method="GET" id="hero-search-form" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: stretch;">
+                    <div style="flex: 2; min-width: 250px; position: relative;">
+                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">📍</span>
+                        <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #ddd; background: white; border-radius: 50px; font-size: 1rem; outline: none;">
                     </div>
-                    <div style="flex: 2; min-width: 180px; position: relative;">
-                        <span style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏷️</span>
-                        <select name="kategorie" id="search-category" style="width: 100%; height: 100%; padding: 1rem 2rem 1rem 3rem; border: 2px solid transparent; background: rgba(0,0,0,0.04); border-radius: 50px; font-size: 1rem; box-sizing: border-box; outline: none; appearance: none; cursor: pointer; transition: background 0.3s;" onfocus="this.style.background='white'; this.style.borderColor='var(--primary-light)';">
+                    <div style="flex: 2; min-width: 200px; position: relative;">
+                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏷️</span>
+                        <select name="kategorie" id="search-category" style="width: 100%; padding: 1rem 2rem 1rem 3rem; border: 2px solid #ddd; background: white; border-radius: 50px; font-size: 1rem; appearance: none; cursor: pointer;">
                             <option value="">Alle Kategorien</option>
                             <option value="Einstellplätze">Einstellplätze</option>
                             <option value="Parkplätze">Parkplätze</option>
@@ -63,10 +68,9 @@
                             <option value="Tierflächen">Tierflächen</option>
                             <option value="Garten & Outdoor">Garten & Outdoor</option>
                         </select>
-                        <span style="position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 0.8rem; color: #888;">▼</span>
                     </div>
-                    <div style="flex: 1; min-width: 130px;">
-                        <button type="submit" class="btn btn-primary" style="padding: 1rem 1.5rem; width: 100%; height: 100%; box-sizing: border-box; font-size: 1.1rem; border-radius: 50px; margin: 0;">Suchen</button>
+                    <div style="flex: 1; min-width: 150px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 1rem; width: 100%; border-radius: 50px;">Jetzt Suchen</button>
                     </div>
                 </form>
             </div>
