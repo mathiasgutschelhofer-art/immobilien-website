@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Profil | G-Immobilien</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        @media (max-width: 768px) {
+            .profile-container { grid-template-columns: 1fr; }
+        }
+        .panel {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+        }
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .avatar-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .avatar-option:hover { transform: scale(1.1); }
+        .avatar-option.selected { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(13, 71, 161, 0.4); transform: scale(1.1); }
+        .danger-zone { border: 1px solid red; background: #fff5f5; }
+        .msg-box { margin-bottom: 1rem; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+                <h2 style="margin: 0; color: var(--primary-color); font-size: 1.5rem;">Startseite</h2>
+            </a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
+                    <div class="dropdown-content">
+                        <a href="einstellplaetze.html">Einstellplätze</a>
+                        <a href="parkplaetze.html">Parkplätze</a>
+                        <a href="lagerraeume.html">Lagerräume</a>
+                        <a href="werkstaetten.html">Werkstätten</a>
+                        <a href="tierflaechen.html">Tierflächen</a>
+                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                    </div>
+                </li>
+                <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 2rem;">
+        <h1 class="section-title" style="text-align: left;">Accounteinstellungen</h1>
+        
+        <div class="profile-container">
+            <!-- Sidebar / Avatar -->
+            <div>
+                <div class="panel" style="text-align: center;">
+                    <img id="current-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver&backgroundColor=b6e3f4" alt="Profilbild" style="width: 150px; height: 150px; border-radius: 50%; margin-bottom: 1rem; border: 4px solid var(--secondary-color);">
+                    <h3 id="display-name">Lade Profil...</h3>
+                    <p id="display-email" style="color: var(--text-secondary); font-size: 0.9rem;"></p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div>
+                <!-- P0: Favoriten -->
+                <div class="panel" style="background: #f8f9fa; border: 1px solid #e9ecef;">
+                    <h3 style="display: flex; align-items: center; gap: 0.5rem;">💙 Meine gemerkten Inserate</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Ihre Favoriten-Liste. Klicken Sie auf ein Inserat, um es im Detail anzusehen.</p>
+                    <div id="favorites-container" class="properties-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); row-gap: 1.5rem;">
+                        <p style="font-size: 0.9rem;">Lade Favoriten...</p>
+                    </div>
+                </div>
+
+                <!-- P1: Avatar Wahl -->
+                <div class="panel">
+                    <h3>Profilbild auswählen</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Wählen Sie einen Comic-Avatar, der Sie repräsentiert.</p>
+                    <div class="avatar-grid" id="avatar-selection-grid">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver&backgroundColor=b6e3f4" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver&backgroundColor=b6e3f4">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=c0aede" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=c0aede">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aiden&backgroundColor=d1d4f9" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Aiden&backgroundColor=d1d4f9">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mason&backgroundColor=ffdfbf" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Mason&backgroundColor=ffdfbf">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack&backgroundColor=ffd5dc" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack&backgroundColor=ffd5dc">
+                        
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Liliana&backgroundColor=b6e3f4" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Liliana&backgroundColor=b6e3f4">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia&backgroundColor=c0aede" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia&backgroundColor=c0aede">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Avery&backgroundColor=d1d4f9" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Avery&backgroundColor=d1d4f9">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Destiny&backgroundColor=ffdfbf" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Destiny&backgroundColor=ffdfbf">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ariel&backgroundColor=ffd5dc" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Ariel&backgroundColor=ffd5dc">
+                    </div>
+                    <button class="btn btn-primary" id="save-avatar-btn" style="margin-top: 1.5rem;">Avatar speichern</button>
+                    <p id="msg-avatar" class="msg-box" style="margin-top: 1rem; color: green;"></p>
+                </div>
+
+                <!-- P2: Profil komplettieren -->
+                <div class="panel">
+                    <h3>Profil vervollständigen (Optional)</h3>
+                    <form id="profile-meta-form" style="margin-top: 1rem;">
+                        <div style="display: flex; gap: 1rem;">
+                            <div class="form-group" style="flex: 1;">
+                                <label for="prof-plz">PLZ</label>
+                                <input type="text" id="prof-plz" class="form-control" placeholder="z.B. 10115">
+                            </div>
+                            <div class="form-group" style="flex: 2;">
+                                <label for="prof-ort">Wohnort</label>
+                                <input type="text" id="prof-ort" class="form-control" placeholder="z.B. Berlin">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="prof-land">Land</label>
+                            <input type="text" id="prof-land" class="form-control" placeholder="z.B. Deutschland">
+                        </div>
+                        <div class="form-group">
+                            <label for="prof-geschlecht">Geschlecht</label>
+                            <select id="prof-geschlecht" class="form-control">
+                                <option value="">Bitte wählen...</option>
+                                <option value="männlich">Männlich</option>
+                                <option value="weiblich">Weiblich</option>
+                                <option value="divers">Divers</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Daten speichern</button>
+                        <p id="msg-meta" class="msg-box" style="margin-top: 1rem; color: green;"></p>
+                    </form>
+                </div>
+
+                <!-- P3: E-Mail ändern -->
+                <div class="panel">
+                    <h3>E-Mail ändern</h3>
+                    <form id="profile-email-form" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="new-email">Neue E-Mail Adresse</label>
+                            <input type="email" id="new-email" class="form-control" required placeholder="neue@mail.de">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Mail anfordern</button>
+                        <p id="msg-email" class="msg-box" style="margin-top: 1rem;"></p>
+                    </form>
+                </div>
+
+                <!-- P4: PW ändern -->
+                <div class="panel">
+                    <h3>Passwort ändern</h3>
+                    <form id="profile-password-form" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="new-pw">Neues Passwort</label>
+                            <input type="password" id="new-pw" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Passwort aktualisieren</button>
+                        <p id="msg-pw" class="msg-box" style="margin-top: 1rem;"></p>
+                    </form>
+                </div>
+
+                <!-- P5: Danger Zone -->
+                <div class="panel danger-zone">
+                    <h3 style="color: red;">Account löschen</h3>
+                    <p style="font-size: 0.9rem;">Wenn Sie Ihren Account löschen, werden alle Ihre persönlichen Daten unwiderruflich aus unserem System gelöscht.</p>
+                    <button class="btn btn-secondary" id="delete-account-btn" style="background-color: transparent; color: red; border: 2px solid red; margin-top: 1rem;">Account endgültig löschen</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col" style="flex: 2;">
+                <h4>G-Immobilien</h4>
+                <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
+            </div>
+            <div class="footer-col" style="flex: 2;">
+                <h4>Rechtliches</h4>
+                <ul>
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutzerklärung</a></li>
+                    <li><a href="agb.html">AGB</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
