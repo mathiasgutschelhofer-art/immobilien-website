@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemeldete Anzeigen | G-Immobilien Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--secondary-color); padding-bottom: 1rem; flex-wrap: wrap;}
+        .admin-nav a { padding: 0.5rem 1rem; font-weight: bold; color: var(--text-secondary); border-radius: 8px; transition: all 0.2s;}
+        .admin-nav a:hover { background: rgba(0,0,0,0.05); }
+        .admin-nav a.active { background: #d32f2f; color: white; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+            </a>
+            <ul class="nav-links">
+                <!-- Dropdown und Auth wird via JS geladen -->
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 2rem; min-height: 60vh;">
+        <h1 class="section-title" style="text-align: left; margin-bottom: 1rem;">🛡️ Kommandozentrum</h1>
+        
+        <div class="admin-nav">
+            <a href="admin.html">Zu Prüfen (Pending)</a>
+            <a href="admin-active.html">Datenbank (Alle Inserate)</a>
+            <a href="admin-reports.html" class="active">Gemeldete Anzeigen</a>
+            <a href="admin-users.html">Benutzerverwaltung</a>
+            <a href="dashboard.html" style="margin-left:auto; background: var(--secondary-color); color: black;">← Zurück</a>
+        </div>
+
+        <h2>🚩 Gemeldete Anzeigen</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Hier sehen Sie Inserate, die von Nutzern gemeldet wurden. Überprüfen Sie den angeführten Grund.</p>
+        
+        <div id="admin-reports-list" class="properties-grid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                <p>Lade gemeldete Anzeigen...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col" style="flex: 2;">
+                <h4>G-Immobilien Admin</h4>
+                <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Admin Portal
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
