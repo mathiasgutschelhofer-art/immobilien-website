@@ -41,16 +41,12 @@
                 <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
-                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
-                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
-                        
-                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
-                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
-                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
-                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
+                        <a href="search.html?hauptgruppe=Plätze"><b>Plätze</b></a>
+                        <a href="search.html?hauptgruppe=Fahrzeuge"><b>Fahrzeuge</b></a>
+                        <a href="search.html?hauptgruppe=Kleinanzeigen"><b>Kleinanzeigen</b></a>
                     </div>
                 </li>
+                <li id="inserieren-nav-item"><a href="register.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem('pendingAction', 'new-listing');">Jetzt Inserieren</a></li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
@@ -60,93 +56,96 @@
     <section class="hero banner-reveal-hero hero-main">
         <div class="hero-bg-animated"></div>
         <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 class="animate-fade-in delay-1">Finden Sie Ihren Platz.</h1>
-            <p class="animate-fade-in delay-2">Ob Garage, Lagerfläche, Pferdebox oder Freifläche – die Platz-Börse ist der führende Marktplatz für alles, was auf anderen Portalen keinen Platz findet.</p>
-            
-            <div class="search-container glass-search animate-fade-in delay-3" style="padding: 1.5rem; border-radius: var(--border-radius); max-width: 1000px; margin: 3rem auto;">
-                <form action="search.html" method="GET" id="hero-search-form" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: stretch;">
-                    <div style="flex: 2; min-width: 200px; position: relative;">
-                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">📍</span>
-                        <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; padding: 1rem 1rem 1rem 3.5rem; border: none; background: white; border-radius: 50px; font-size: 1rem; outline: none; box-sizing: border-box; height: 100%;">
-                    </div>
-                    <div style="flex: 2; min-width: 200px; position: relative;">
-                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏷️</span>
-                        <select name="kategorie" id="search-category" style="width: 100%; padding: 1rem 2rem 1rem 3.5rem; border: none; background: white; border-radius: 50px; font-size: 1rem; appearance: none; cursor: pointer; box-sizing: border-box; height: 100%;">
-                            <option value="">Alle Kategorien</option>
-                            <option value="Plätze für Fahrzeuge">Plätze für Fahrzeuge</option>
-                            <option value="Lagerräume & Container">Lagerräume & Container</option>
-                            <option value="Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</option>
-                            <option value="Tierflächen (Weiden, Ställe)">Tierflächen</option>
-                            <option value="Garten & Outdoorflächen">Garten & Outdoor</option>
-                        </select>
-                    </div>
-                    <div style="flex: 2; min-width: 150px; position: relative;">
-                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🔑</span>
-                        <select name="transaktion" id="search-transaction" style="width: 100%; padding: 1rem 2rem 1rem 3.5rem; border: none; background: white; border-radius: 50px; font-size: 1rem; appearance: none; cursor: pointer; box-sizing: border-box; height: 100%;">
-                            <option value="">Alle Optionen</option>
-                            <option value="Mieten">Miete / Pacht</option>
-                            <option value="Kaufen">Kauf</option>
-                            <option value="Verschenken">Zu verschenken</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 150px;">
-                        <button type="submit" class="btn btn-primary" style="padding: 1rem; width: 100%; border-radius: 50px; height: 100%; box-sizing: border-box;">Suchen</button>
-                    </div>
-                </form>
+        <div class="hero-content" style="max-width: 1200px;">
+            <div class="animate-fade-in delay-1">
+                <h1 style="font-size: 3rem; margin-bottom: 0.5rem;">Finden. Mieten. Platz schaffen.</h1>
+                <p style="margin-bottom: 0;">Ihr Marktplatz für Nischen und Spezielles.</p>
             </div>
-            
-            <div class="animate-fade-in delay-3" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-                <a href="register.html" id="provider-cta-btn" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: 1.05rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 10px 20px rgba(255, 152, 0, 0.3);" onclick="sessionStorage.setItem('pendingAction', 'new-listing');">
-                    <span>✨</span> Sie sind Anbieter? Jetzt kostenlos Inserat erstellen!
+
+            <div class="three-pillars animate-fade-in delay-2">
+                <!-- Plätze -->
+                <a href="search.html?hauptgruppe=Plätze" class="pillar-card">
+                    <img src="assets/Plätze.png" alt="Plätze" class="pillar-image">
+                    <div class="pillar-text-box">
+                        <h2>Plätze</h2>
+                        <p>Parkplätze, Lagerräume, Tierflächen und Nischenplätze finden.</p>
+                    </div>
+                </a>
+
+                <!-- Fahrzeuge -->
+                <a href="search.html?hauptgruppe=Fahrzeuge" class="pillar-card">
+                    <img src="assets/Fahrzeuge.png" alt="Fahrzeuge" class="pillar-image">
+                    <div class="pillar-text-box">
+                        <h2>Fahrzeuge</h2>
+                        <p>Verkauf und Vermietung von Spezialfahrzeugen, Anhängern und mehr.</p>
+                    </div>
+                </a>
+
+                <!-- Kleinanzeigen -->
+                <a href="search.html?hauptgruppe=Kleinanzeigen" class="pillar-card">
+                    <img src="assets/kleinanzeigen.png" alt="Kleinanzeigen" class="pillar-image">
+                    <div class="pillar-text-box">
+                        <h2>Kleinanzeigen</h2>
+                        <p>Der Marktplatz für alles, was sonst keinen Platz findet.</p>
+                    </div>
                 </a>
             </div>
+            
+            <div class="animate-fade-in delay-3" style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <div class="search-container glass-search" style="padding: 1rem; border-radius: 50px; display: inline-block;">
+                    <form action="search.html" method="GET" style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="text" name="q" placeholder="Was suchen Sie?..." style="padding: 0.8rem 1.5rem; border-radius: 50px; border: none; outline: none; width: 300px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 0.8rem 2rem;">Suchen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         </div>
     </section>
 
     <!-- Immobilien Kategorien -->
     <section class="container" style="padding-top: 4rem;">
         
-        <!-- Plätze für Fahrzeuge -->
+        <!-- Plätze -->
         <div class="category-section">
             <div class="category-header">
-                <h2>Plätze für Fahrzeuge</h2>
-                <a href="search.html?kategorie=Plätze für Fahrzeuge">Alle ansehen &rarr;</a>
+                <h2>Plätze & Flächen</h2>
+                <a href="search.html?hauptgruppe=Plätze">Alle Plätze ansehen &rarr;</a>
             </div>
             <div class="carousel-wrapper">
                 <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Plätze für Fahrzeuge">
-                    <div style="padding: 2rem; color: #888;">Lade Fahrzeugplätze...</div>
+                <div class="carousel-track dynamic-category-grid" data-main-category="Plätze">
+                    <div style="padding: 2rem; color: #888;">Lade Plätze...</div>
                 </div>
                 <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
-        <!-- Lagerräume & Container -->
+        <!-- Fahrzeuge -->
         <div class="category-section">
             <div class="category-header">
-                <h2>Lagerräume & Container</h2>
-                <a href="search.html?kategorie=Lagerräume & Container">Alle ansehen &rarr;</a>
+                <h2>Fahrzeug-Markt</h2>
+                <a href="search.html?hauptgruppe=Fahrzeuge">Alle Fahrzeuge ansehen &rarr;</a>
             </div>
             <div class="carousel-wrapper">
                 <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Lagerräume & Container">
-                    <div style="padding: 2rem; color: #888;">Lade Lagerräume...</div>
+                <div class="carousel-track dynamic-category-grid" data-main-category="Fahrzeuge">
+                    <div style="padding: 2rem; color: #888;">Lade Fahrzeuge...</div>
                 </div>
                 <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
-        <!-- Tierflächen -->
+        <!-- Kleinanzeigen -->
         <div class="category-section">
             <div class="category-header">
-                <h2>Tierflächen (Weiden, Ställe)</h2>
-                <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Alle ansehen &rarr;</a>
+                <h2>Kleinanzeigen</h2>
+                <a href="search.html?hauptgruppe=Kleinanzeigen">Alle Kleinanzeigen ansehen &rarr;</a>
             </div>
             <div class="carousel-wrapper">
                 <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Tierflächen (Weiden, Ställe)">
-                    <div style="padding: 2rem; color: #888;">Lade Tierflächen...</div>
+                <div class="carousel-track dynamic-category-grid" data-main-category="Kleinanzeigen">
+                    <div style="padding: 2rem; color: #888;">Lade Kleinanzeigen...</div>
                 </div>
                 <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>

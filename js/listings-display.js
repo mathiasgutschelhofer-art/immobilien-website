@@ -17,15 +17,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Da es auf der Startseite mehrere Container geben kann, iterieren wir durch alle
     for (const container of containers) {
         const categoryName = container.getAttribute('data-category');
-        if (!categoryName) continue;
+        const mainCategoryName = container.getAttribute('data-main-category');
+        
+        if (!categoryName && !mainCategoryName) continue;
 
-        // Fetch active listings for this Category
-        const { data: listings, error } = await supabase
+        let query = supabase
             .from('listings')
             .select('*')
-            .eq('status', 'active')
-            .eq('category', categoryName)
-            .order('created_at', { ascending: false });
+            .eq('status', 'active');
+
+        if (mainCategoryName) {
+            query = query.eq('main_category', mainCategoryName);
+        } else if (categoryName) {
+            query = query.eq('category', categoryName);
+        }
+
+        const { data: listings, error } = await query.order('created_at', { ascending: false });
 
         if (error) {
             container.innerHTML = `<div style="grid-column: 1 / -1; padding: 1rem;"><p style="color:red">Fehler beim Laden: ${error.message}</p></div>`;
@@ -49,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Auf der Startseite eine kleinere Warnung anzeigen
                 container.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; background: rgba(0,0,0,0.03); border-radius: var(--border-radius);">
-                        <p style="color: var(--text-secondary);">Aktuell keine Inserate in <b>${categoryName}</b> verfügbar.</p>
+                        <p style="color: var(--text-secondary);">Aktuell keine Inserate in <b>${mainCategoryName || categoryName}</b> verfügbar.</p>
                         <a href="register.html" style="font-size: 0.9rem; margin-top: 0.5rem; display: inline-block;">Jetzt als Erster inserieren!</a>
                     </div>
                 `;

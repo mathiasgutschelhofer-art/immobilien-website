@@ -48,6 +48,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('expose-country').textContent = listing.country || '-';
     document.getElementById('expose-id').textContent = listing.id;
 
+    // --- NEU: Maße & Fläche anzeigen ---
+    const sqmRow = document.getElementById('row-sqm');
+    const lengthRow = document.getElementById('row-length');
+    const widthRow = document.getElementById('row-width');
+    const heightRow = document.getElementById('row-height');
+
+    if (listing.sqm && sqmRow) {
+        document.getElementById('expose-sqm').textContent = listing.sqm;
+        sqmRow.style.display = 'flex';
+    }
+    if (listing.length && lengthRow) {
+        document.getElementById('expose-length').textContent = listing.length;
+        lengthRow.style.display = 'flex';
+    }
+    if (listing.width && widthRow) {
+        document.getElementById('expose-width').textContent = listing.width;
+        widthRow.style.display = 'flex';
+    }
+    if (listing.height && heightRow) {
+        document.getElementById('expose-height').textContent = listing.height;
+        heightRow.style.display = 'flex';
+    }
+
     // Galerie
     const mainImg = document.getElementById('main-image');
     const thumbsContainer = document.getElementById('thumbnails');

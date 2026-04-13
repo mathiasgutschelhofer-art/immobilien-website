@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             else {
                 pendingContainer.innerHTML = '';
                 pendingData.forEach(item => {
-                    const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/ddd/555?text=Kein+Bild';
+                    const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
                     
                     // Erkennung ob Neu oder Bearbeitet
                     const createdTime = new Date(item.created_at).getTime();
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             else {
                 activeContainer.innerHTML = '';
                 activeData.forEach(item => {
-                    const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/ddd/555?text=Kein+Bild';
+                    const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
                     
                     let statusColor = "green";
                     let statusLabel = "Aktiv";
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/ddd/555?text=Kein+Bild';
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
             
             reportsContainer.innerHTML += `
                 <div class="property-card" style="border: 2px solid #d32f2f;">

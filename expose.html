@@ -51,16 +51,12 @@
                 <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
-                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
-                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
-                        
-                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
-                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
-                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
-                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
+                        <a href="search.html?hauptgruppe=Plätze"><b>Plätze</b></a>
+                        <a href="search.html?hauptgruppe=Fahrzeuge"><b>Fahrzeuge</b></a>
+                        <a href="search.html?hauptgruppe=Kleinanzeigen"><b>Kleinanzeigen</b></a>
                     </div>
                 </li>
+                <li><a href="register.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem(''pendingAction'', ''new-listing'');">Jetzt Inserieren</a></li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
@@ -119,6 +115,24 @@
                                 <span>Kategorie</span>
                                 <span id="expose-cat">-</span>
                             </div>
+                            <!-- Maße & Fläche -->
+                            <div class="detail-row" id="row-sqm" style="display: none;">
+                                <span>Fläche</span>
+                                <span><span id="expose-sqm">-</span> m²</span>
+                            </div>
+                            <div class="detail-row" id="row-length" style="display: none;">
+                                <span>Länge</span>
+                                <span><span id="expose-length">-</span> m</span>
+                            </div>
+                            <div class="detail-row" id="row-width" style="display: none;">
+                                <span>Breite</span>
+                                <span><span id="expose-width">-</span> m</span>
+                            </div>
+                            <div class="detail-row" id="row-height" style="display: none;">
+                                <span>Einfahrtshöhe / Höhe</span>
+                                <span><span id="expose-height">-</span> m</span>
+                            </div>
+
                             <div class="detail-row">
                                 <span>Postleitzahl</span>
                                 <span id="expose-zip">-</span>

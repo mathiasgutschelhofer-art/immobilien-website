@@ -191,9 +191,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('edit-listing-id').value = listing.id;
         document.getElementById('list-title').value = listing.title;
         
-        // Neue Kategoriewahl
-        document.getElementById('list-parent-category').value = listing.parent_category || '';
-        updateSubcategories(); // Trigger UI Update
+        // Neue Kategoriewahl (3 Ebenen)
+        const mainCat = listing.main_category || 'Plätze';
+        document.getElementById('list-main-category').value = mainCat;
+        
+        // Trigger Categories befüllen
+        updateCategories();
+        
+        const parentCat = listing.parent_category || '';
+        document.getElementById('list-category').value = parentCat;
+        
+        // Trigger Subcategories befüllen
+        updateSubcategories();
+        
         if (listing.subcategory) {
             document.getElementById('list-subcategory').value = listing.subcategory;
         }
@@ -237,6 +247,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initital Load
     loadUserListings();
 
+    // --- AUTOMATYISCHES ÖFFNEN BEI REDIRECT ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const pendingAction = sessionStorage.getItem('pendingAction') || urlParams.get('action');
+
+    if (pendingAction === 'new-listing') {
+        sessionStorage.removeItem('pendingAction');
+        // Kleine Verzögerung für sauberes Rendering
+        setTimeout(() => {
+            const openBtn = document.getElementById('open-listing-modal-btn');
+            if (openBtn) {
+                openBtn.click();
+            } else {
+                // Fallback falls der Button noch nicht im DOM/Selektor bereit
+                const fallbackBtn = document.getElementById('open-listing-modal-btn');
+                if (fallbackBtn) fallbackBtn.click();
+            }
+        }, 500);
+        // URL Parameter säubern
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
 
     // --- 1. MODAL LOGIK ---
     const modal = document.getElementById('listing-modal');
@@ -268,46 +299,110 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // --- 2. DYNAMISCHE KATEGORIEN & MAẞE ---
-    const parentSelect = document.getElementById('list-parent-category');
-    const subWrapper = document.getElementById('subcategory-wrapper');
+    const mainSelect = document.getElementById('list-main-category');
+    const catSelect = document.getElementById('list-category');
+    const catWrapper = document.getElementById('category-wrapper');
     const subSelect = document.getElementById('list-subcategory');
+    const subWrapper = document.getElementById('subcategory-wrapper');
     const dimWrapper = document.getElementById('dimensions-wrapper');
     const labelHeight = document.getElementById('label-height');
 
-    const subcategoryMap = {
-        "Plätze für Fahrzeuge": [
-            "Unüberdachte Plätze",
-            "Überdachte Plätze: Garagen",
-            "Überdachte Plätze: Carports",
-            "Überdachte Plätze: Sonstige"
+    const sqmWrapper = document.getElementById('sqm-wrapper');
+    const dimFields = document.querySelectorAll('.dim-field');
+
+    const mainCategoryMap = {
+        "Plätze": [
+            "Fahrzeugplätze",
+            "Lagerflächen",
+            "Tierplätze",
+            "Hobbyräume & Werkstätten",
+            "Freiflächen & Garten"
         ],
-        "Lagerräume & Container": ["Lagerraum", "Container", "Kellerabteil", "Dachboden"],
-        "Werkstätten & Hobbyräume": ["Werkstatt", "Hobbyraum", "Atelier"],
-        "Tierflächen (Weiden, Ställe)": ["Pferdebox", "Offenstall", "Weidefläche"],
-        "Garten & Outdoorflächen": ["Kleingarten", "Grillplatz", "Lagerplatz"]
+        "Fahrzeuge": [
+            "PKW",
+            "Motorräder",
+            "Wohnmobile",
+            "Anhänger",
+            "Tiertransporter",
+            "Wohnwagen",
+            "Sonstige"
+        ],
+        "Kleinanzeigen": ["Sonstige"]
     };
 
+    const subcategoryMap = {
+        "Fahrzeugplätze": [
+            "Unüberdachte Stellplätze",
+            "Garagen",
+            "Carports",
+            "Sonstige"
+        ],
+        "Lagerflächen": ["Lagerräume", "Container", "Keller & Dachböden", "Sonstige"],
+        "Hobbyräume & Werkstätten": ["Werkstätten", "Hobbyräume & Ateliers", "Sonstige"],
+        "Tierplätze": ["Pferdeboxen", "Offenställe & Weiden", "Sonstige"],
+        "Freiflächen & Garten": ["Gartenbereiche", "Sonstige Freiflächen", "Sonstige"]
+    };
+
+    function updateCategories() {
+        const main = mainSelect.value;
+        catSelect.innerHTML = '<option value="">Bitte wählen...</option>';
+        subWrapper.style.display = 'none';
+        dimWrapper.style.display = 'none';
+        
+        if (main && mainCategoryMap[main]) {
+            mainCategoryMap[main].forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                catSelect.appendChild(opt);
+            });
+            catWrapper.style.display = 'block';
+            catSelect.required = true;
+        } else {
+            catWrapper.style.display = 'none';
+            catSelect.required = false;
+        }
+    }
+
     function updateSubcategories() {
-        const parent = parentSelect.value;
+        const cat = catSelect.value;
         subSelect.innerHTML = '<option value="">Bitte wählen...</option>';
         
-        if (parent && subcategoryMap[parent]) {
-            subcategoryMap[parent].forEach(sub => {
-                const opt = document.createElement('option');
-                opt.value = sub;
-                opt.textContent = sub;
-                subSelect.appendChild(opt);
-            });
-            subWrapper.style.display = 'block';
-            subSelect.required = true;
-
-            // Maße einblenden für Fahrzeuge und Lagerräume
-            if (parent === "Plätze für Fahrzeuge" || parent === "Lagerräume & Container") {
-                dimWrapper.style.display = 'block';
-                labelHeight.textContent = parent === "Plätze für Fahrzeuge" ? "Einfahrtshöhe / Höhe (in m)" : "Raumhöhe (in m)";
+        if (cat) {
+            // Subkategorien anzeigen
+            if (subcategoryMap[cat] && subcategoryMap[cat].length > 0) {
+                subcategoryMap[cat].forEach(sub => {
+                    const opt = document.createElement('option');
+                    opt.value = sub;
+                    opt.textContent = sub;
+                    subSelect.appendChild(opt);
+                });
+                subWrapper.style.display = 'block';
+                subSelect.required = true;
             } else {
-                dimWrapper.style.display = 'none';
+                subWrapper.style.display = 'none';
+                subSelect.required = false;
             }
+
+            // Maße / Fläche einblenden (Nur für die Säule "Plätze")
+            let showSqm = false;
+            let showLBH = false;
+
+            if (cat === "Lagerflächen") {
+                showSqm = true;
+                showLBH = true;
+                labelHeight.textContent = "Raumhöhe (in m)";
+            } else if (cat === "Fahrzeugplätze") {
+                showLBH = true;
+                labelHeight.textContent = "Einfahrtshöhe / Höhe (in m)";
+            } else if (cat === "Hobbyräume & Werkstätten" || cat === "Tierplätze" || cat === "Freiflächen & Garten") {
+                showSqm = true;
+            }
+
+            dimWrapper.style.display = (showSqm || showLBH) ? 'block' : 'none';
+            if (sqmWrapper) sqmWrapper.style.display = showSqm ? 'block' : 'none';
+            dimFields.forEach(f => f.style.display = showLBH ? 'block' : 'none');
+
         } else {
             subWrapper.style.display = 'none';
             subSelect.required = false;
@@ -315,8 +410,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    parentSelect.addEventListener('change', updateSubcategories);
+    mainSelect.addEventListener('change', updateCategories);
+    catSelect.addEventListener('change', updateSubcategories);
     window.updateSubcategories = updateSubcategories; // Export for edit mode
+    window.updateCategories = updateCategories;
 
     const descArea = document.getElementById('list-desc');
     const charCountNode = document.getElementById('char-count');
@@ -597,7 +694,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const title = document.getElementById('list-title').value;
-            const parentCat = document.getElementById('list-parent-category').value;
+            const mainCat = document.getElementById('list-main-category').value;
+            const parentCat = document.getElementById('list-category').value;
             const subCat = document.getElementById('list-subcategory').value;
             const country = document.getElementById('list-country').value;
             const street = document.getElementById('list-street').value;
@@ -608,15 +706,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const desc = document.getElementById('list-desc').value;
             
             // Neue Felder
+            const sqm = document.getElementById('list-sqm').value ? parseFloat(document.getElementById('list-sqm').value) : null;
             const length = document.getElementById('list-length').value ? parseFloat(document.getElementById('list-length').value) : null;
             const width = document.getElementById('list-width').value ? parseFloat(document.getElementById('list-width').value) : null;
             const height = document.getElementById('list-height').value ? parseFloat(document.getElementById('list-height').value) : null;
 
             const listingData = {
                 title: title,
-                category: subCat || parentCat, // Fallback für alte Logik
+                main_category: mainCat,
+                category: subCat || parentCat, 
                 parent_category: parentCat,
                 subcategory: subCat,
+                sqm: sqm,
                 length: length,
                 width: width,
                 height: height,
@@ -695,17 +796,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             submitBtn.textContent = "Erneut versuchen";
         }
     });
-
-    // Automatic modal open if URL has ?action=new-listing or sessionStorage has pending action
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('action') === 'new-listing' || sessionStorage.getItem('pendingAction') === 'new-listing') {
-        sessionStorage.removeItem('pendingAction');
-        const createBtn = document.getElementById('open-listing-modal-btn');
-        if (createBtn) {
-            // Slight delay ensures rendering is fully complete
-            setTimeout(() => createBtn.click(), 100);
-        }
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
 
 });

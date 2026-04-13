@@ -4,16 +4,20 @@
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Komplette Datenbank | Platz-B�rse Admin</title>
+    <title>Komplette Datenbank | Platz-Börse Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">`n    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/banner.css">
 </head>
-<body>`n    <!-- Side Banners -->`n    <div class="side-banner side-banner-left"></div>`n    <div class="side-banner side-banner-right"></div>
-            <div class="fixed-header-bg"></div>
+<body>
+    <!-- Side Banners -->
+    <div class="side-banner side-banner-left"></div>
+    <div class="side-banner side-banner-right"></div>
+    <div class="fixed-header-bg"></div>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                <img src="assets/logo.svg?v=2" alt="Platz-B�rse Logo" class="logo-image" style="height: 48px; width: auto;">
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
             
             <div class="menu-toggle" id="mobile-menu">
@@ -24,18 +28,14 @@
 
             <ul class="nav-links">
                 <li class="dropdown category-item">
-                    <a href="#" style="cursor: default;">Kategorien ?</a>
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
-                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
-                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
-                        
-                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
-                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
-                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
-                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
+                        <a href="search.html?hauptgruppe=Plätze"><b>Plätze</b></a>
+                        <a href="search.html?hauptgruppe=Fahrzeuge"><b>Fahrzeuge</b></a>
+                        <a href="search.html?hauptgruppe=Kleinanzeigen"><b>Kleinanzeigen</b></a>
                     </div>
                 </li>
+                <li><a href="register.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem(''pendingAction'', ''new-listing'');">Jetzt Inserieren</a></li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
@@ -43,21 +43,21 @@
 
 
     <div class="container" style="padding-top: 2rem; min-height: 60vh;">
-        <h1 class="section-title" style="text-align: left; margin-bottom: 1rem;">??? Kommandozentrum</h1>
+        <h1 class="section-title" style="text-align: left; margin-bottom: 1rem;">🛡️ Kommandozentrum</h1>
         
         <div class="admin-nav">
             <a href="admin.html#stats">Ressourcen</a>
-            <a href="admin.html#pending">Zu Pr�fen <span id="badge-pending" class="admin-badge" style="display: none;"></span></a>
+            <a href="admin.html#pending">Zu Prüfen <span id="badge-pending" class="admin-badge" style="display: none;"></span></a>
             <a href="admin-active.html">Datenbank <span id="badge-active" class="admin-badge" style="display: none;"></span></a>
             <a href="admin.html#reports">Meldungen <span id="badge-reports" class="admin-badge" style="display: none;"></span></a>
             <a href="admin.html#users">Benutzer <span id="badge-users" class="admin-badge" style="display: none;"></span></a>
             <a href="admin.html#system">Wartung</a>
-            <a href="dashboard.html" style="margin-left:auto; background: var(--secondary-color); color: black;">? Zur�ck</a>
+            <a href="dashboard.html" style="margin-left:auto; background: var(--secondary-color); color: black;">← Zurück</a>
         </div>
 
         <section id="active" style="margin-top: 2rem;">
-            <h2>??? Komplette Inserat-Datenbank</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Alle Inserate (aktiv, pausiert, abgelaufen). Hier k�nnen Sie bei Bedarf einen "Hard Delete" durchf�hren.</p>
+            <h2>📂 Komplette Inserat-Datenbank</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Alle Inserate (aktiv, pausiert, abgelaufen). Hier können Sie bei Bedarf einen "Hard Delete" durchführen.</p>
             <div id="admin-active-list" class="properties-grid small-cards">
                 <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
                     <p>Lade komplette Inserat-Datenbank...</p>
@@ -69,8 +69,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-col" style="flex: 2;">
-                <h4>Platz-B�rse Admin</h4>
-                <p style="color: #aaa;">Interne Verwaltungsebene der Platz-B�rse.</p>
+                <h4>Platz-Börse Admin</h4>
+                <p style="color: #aaa;">Interne Verwaltungsebene der Platz-Börse.</p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -83,12 +83,3 @@
     <script src="js/admin.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

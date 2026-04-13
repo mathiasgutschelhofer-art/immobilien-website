@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const searchOrt = urlParams.get('ort') || '';
+    const searchHauptgruppe = urlParams.get('hauptgruppe') || '';
     const searchKat = urlParams.get('kategorie') || '';
     const searchTransaktion = urlParams.get('transaktion') || '';
     const minL = urlParams.get('min_l') || '';
@@ -15,11 +16,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fülle Suchformulare wieder aus
     const locInput = document.getElementById('search-location');
+    const mainSelect = document.getElementById('search-main-category');
     const katSelect = document.getElementById('search-category');
     const transSelect = document.getElementById('search-transaction');
+    
     if (locInput) locInput.value = searchOrt;
-    if (katSelect) katSelect.value = searchKat;
     if (transSelect) transSelect.value = searchTransaktion;
+
+    const mainCategoryMap = {
+        "Plätze": [
+            "Fahrzeugplätze",
+            "Lagerflächen",
+            "Tierplätze",
+            "Hobbyräume & Werkstätten",
+            "Freiflächen & Garten"
+        ],
+        "Fahrzeuge": [
+            "PKW",
+            "Motorräder",
+            "Wohnmobile",
+            "Anhänger",
+            "Tiertransporter",
+            "Wohnwagen",
+            "Sonstige"
+        ],
+        "Kleinanzeigen": ["Sonstige"]
+    };
+
+    function updateSearchCategories(selectedMain, selectedKat) {
+        if (!katSelect) return;
+        katSelect.innerHTML = '<option value="">Kategorien...</option>';
+        if (selectedMain && mainCategoryMap[selectedMain]) {
+            mainCategoryMap[selectedMain].forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                if (cat === selectedKat) opt.selected = true;
+                katSelect.appendChild(opt);
+            });
+        }
+    }
+
+    if (mainSelect) {
+        mainSelect.value = searchHauptgruppe;
+        updateSearchCategories(searchHauptgruppe, searchKat);
+        mainSelect.addEventListener('change', () => {
+            updateSearchCategories(mainSelect.value, '');
+        });
+    }
 
     // Advanced Filters befüllen
     const minLInput = document.getElementById('search-min-l');
@@ -62,8 +106,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const isPlz = /^\d{4,5}$/.test(searchOrt.trim());
 
+        if (searchHauptgruppe) {
+            query = query.eq('main_category', searchHauptgruppe);
+        }
+
         if (searchKat) {
-            // Wir filtern entweder auf Main Category oder Subcategory
+            // Wir filtern entweder auf Parent Category oder Subcategory
             query = query.or(`parent_category.eq."${searchKat}",category.eq."${searchKat}"`);
         }
 
@@ -143,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.innerHTML = '';
         
         sortedListings.forEach(item => {
-            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80&w=800';
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
             const exposeUrl = `expose.html?id=${item.id}`;
             
             const currentDate = new Date();
@@ -177,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <h3 class="property-title">${item.title}</h3>
                         <div class="property-details">
                             <div class="detail-item" style="font-size: 0.8rem; font-weight: bold;">📍 ${item.zip} ${item.city}</div>
-                            <div class="detail-item" style="font-size: 0.8rem;">🏷️ ${item.category}</div>
+                            <div class="detail-item" style="font-size: 0.8rem;">🏷️ ${item.subcategory || item.parent_category || item.category}</div>
                         </div>
 
                         <!-- Maße Anzeige in der Karte -->

@@ -32,16 +32,12 @@
                 <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
-                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
-                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
-                        
-                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
-                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
-                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
-                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
+                        <a href="search.html?hauptgruppe=Plätze"><b>Plätze</b></a>
+                        <a href="search.html?hauptgruppe=Fahrzeuge"><b>Fahrzeuge</b></a>
+                        <a href="search.html?hauptgruppe=Kleinanzeigen"><b>Kleinanzeigen</b></a>
                     </div>
                 </li>
+                <li id="inserieren-nav-item"><a href="register.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem('pendingAction', 'new-listing');">Jetzt Inserieren</a></li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
@@ -80,14 +76,19 @@
                         <input type="text" id="list-title" class="form-control" maxlength="200" required placeholder="z.B. Helle Pferdebox">
                     </div>
                     <div class="form-group">
-                        <label for="list-parent-category">Hauptkategorie *</label>
-                        <select id="list-parent-category" class="form-control" required>
+                        <label for="list-main-category">Hauptgruppe *</label>
+                        <select id="list-main-category" class="form-control" required>
                             <option value="">Bitte wählen...</option>
-                            <option value="Plätze für Fahrzeuge">Plätze für Fahrzeuge</option>
-                            <option value="Lagerräume & Container">Lagerräume & Container</option>
-                            <option value="Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</option>
-                            <option value="Tierflächen (Weiden, Ställe)">Tierflächen (Weiden, Ställe)</option>
-                            <option value="Garten & Outdoorflächen">Garten & Outdoorflächen</option>
+                            <option value="Plätze">Plätze (Parken, Lagern, Tiere, Garten)</option>
+                            <option value="Fahrzeuge">Fahrzeuge (PKW, Wohnmobile, Anhänger...)</option>
+                            <option value="Kleinanzeigen">Kleinanzeigen (Sonstiges)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="category-wrapper" style="display: none;">
+                        <label for="list-category">Kategorie *</label>
+                        <select id="list-category" class="form-control">
+                            <option value="">Bitte wählen...</option>
+                            <!-- Wird dynamisch befüllt -->
                         </select>
                     </div>
                     <div class="form-group" id="subcategory-wrapper" style="display: none;">
@@ -103,15 +104,19 @@
                     <h3 style="margin-top: 1rem; margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Technische Maße (optional)</h3>
                     <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Geben Sie die Maße an, damit Suchende (z.B. mit Wohnmobilen) Ihren Platz leichter finden.</p>
                     <div class="form-row">
-                        <div class="form-group">
+                        <div class="form-group" id="sqm-wrapper" style="display: none;">
+                            <label for="list-sqm">Fläche (in m²)</label>
+                            <input type="number" id="list-sqm" class="form-control" step="0.1" min="0" placeholder="z.B. 25">
+                        </div>
+                        <div class="form-group dim-field">
                             <label for="list-length">Länge (in Metern)</label>
                             <input type="number" id="list-length" class="form-control" step="0.1" min="0" placeholder="z.B. 6.5">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group dim-field">
                             <label for="list-width">Breite (in Metern)</label>
                             <input type="number" id="list-width" class="form-control" step="0.1" min="0" placeholder="z.B. 2.5">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group dim-field">
                             <label for="list-height" id="label-height">Einfahrtshöhe / Höhe (in Metern)</label>
                             <input type="number" id="list-height" class="form-control" step="0.1" min="0" placeholder="z.B. 3.2">
                         </div>
@@ -136,11 +141,11 @@
                 <div class="form-row">
                     <div class="form-group" style="flex: 1;">
                         <label for="list-zip">PLZ *</label>
-                        <input type="text" id="list-zip" class="form-control" required pattern="[0-9]{4,5}" title="4 oder 5 stellige Postleitzahl" placeholder="8605">
+                        <input type="text" id="list-zip" class="form-control" required pattern="[0-9]{4,5}" title="4 oder 5 stellige Postleitzahl" placeholder="z.B. 1010">
                     </div>
                     <div class="form-group" style="flex: 2;">
                         <label for="list-city">Ort *</label>
-                        <input type="text" id="list-city" class="form-control" required placeholder="Parschlug">
+                        <input type="text" id="list-city" class="form-control" required placeholder="z.B. Musterstadt">
                     </div>
                 </div>
 

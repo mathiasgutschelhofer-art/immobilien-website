@@ -24,26 +24,23 @@
                 <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
-                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
-                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
-                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
-                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
-                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
-                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
+                        <a href="search.html?hauptgruppe=Plätze"><b>Plätze</b></a>
+                        <a href="search.html?hauptgruppe=Fahrzeuge"><b>Fahrzeuge</b></a>
+                        <a href="search.html?hauptgruppe=Kleinanzeigen"><b>Kleinanzeigen</b></a>
                     </div>
                 </li>
+                <li><a href="register.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem(''pendingAction'', ''new-listing'');">Jetzt Inserieren</a></li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
     </header>
 
     <div class="container" style="padding-top: 2rem; min-height: 60vh;">
-        <h1 class="section-title">Werkstätten & Hobbyräume</h1>
+        <h1 class="section-title">Hobbyräume & Werkstätten</h1>
         <p style="text-align: center; margin-bottom: 3rem; color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
             Ihr nächstes Projekt verdient den richtigen Raum. Entdecken Sie Werkstätten und Hobbyräume in Ihrer Nähe.
         </p>
-        <div id="listings-category-container" class="properties-grid" data-category="Werkstätten & Hobbyräume">
+        <div id="listings-category-container" class="properties-grid" data-category="Hobbyräume & Werkstätten">
             <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;"><p>Lade Inserate aus der Datenbank...</p></div>
         </div>
     </div>

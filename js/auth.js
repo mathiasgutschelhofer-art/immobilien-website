@@ -115,7 +115,7 @@ async function updateNavbar(session, supabase) {
     if (!navLinksList) return;
 
     // Alte Auth Items löschen
-    ['auth-dashboard-item', 'auth-nav-item', 'logout-nav-item'].forEach(id => {
+    ['auth-dashboard-item', 'auth-nav-item', 'logout-nav-item', 'inserieren-nav-item'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.remove();
     });
@@ -165,6 +165,12 @@ async function updateNavbar(session, supabase) {
             navLinksList.appendChild(adminLi);
         }
 
+        // 0. Jetzt Inserieren (Eingeloggt -> zum Dashboard)
+        const insLi = document.createElement('li');
+        insLi.id = 'inserieren-nav-item';
+        insLi.innerHTML = `<a href="dashboard.html?action=new-listing" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem('pendingAction', 'new-listing');">Jetzt Inserieren</a>`;
+        navLinksList.appendChild(insLi);
+
         // 1. Mein Dashboard Link
         const dashLi = document.createElement('li');
         dashLi.id = 'auth-dashboard-item';
@@ -189,6 +195,12 @@ async function updateNavbar(session, supabase) {
         logoutLi.innerHTML = `<a href="#" id="logout-btn" style="color: var(--text-secondary); font-size: 0.9rem;">Abmelden</a>`;
         navLinksList.appendChild(logoutLi);
     } else {
+        // Jetzt Inserieren (Nicht eingeloggt -> zur Registrierung)
+        const insLi = document.createElement('li');
+        insLi.id = 'inserieren-nav-item';
+        insLi.innerHTML = `<a href="register.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none;" onclick="sessionStorage.setItem('pendingAction', 'new-listing');">Jetzt Inserieren</a>`;
+        navLinksList.appendChild(insLi);
+
         const loginLi = document.createElement('li');
         loginLi.id = 'auth-nav-item';
         loginLi.innerHTML = `<a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a>`;
@@ -462,7 +474,7 @@ function initProfilePage(supabase, user) {
                         if(listErr || !listings) return;
                         favContainer.innerHTML = '';
                         listings.forEach(item => {
-                            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/0d47a1/ffffff?text=Bild';
+                            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
                             favContainer.innerHTML += `
                                 <div class="property-card" style="box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 0;">
                                     <img src="${imgUrl}" alt="Bild" class="property-img" style="height: 120px;">
