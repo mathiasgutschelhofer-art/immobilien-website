@@ -1,0 +1,10 @@
+<svg width="250" height="60" viewBox="0 0 250 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Platz-Icon / Logo-Symbol -->
+  <rect x="5" y="10" width="40" height="40" rx="8" fill="#0b2545"/>
+  <path d="M18 40V20H26C29.3137 20 32 22.6863 32 26C32 29.3137 29.3137 32 26 32H18" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="35" y="35" width="12" height="12" rx="3" fill="#ff9800"/>
+  
+  <!-- Text-Marke -->
+  <text x="60" y="38" fill="#0b2545" style="font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">Platz-Börse</text>
+  <text x="60" y="52" fill="#6B7280" style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">Ihr Platzfinder</text>
+</svg>

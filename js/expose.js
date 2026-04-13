@@ -29,14 +29,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Fülle Meta-Daten ab
-    document.title = listing.title + ' | G-Immobilien';
+    document.title = listing.title + ' | Platz-Börse';
     loadingDiv.style.display = 'none';
     contentDiv.style.display = 'block';
 
     document.getElementById('expose-title').textContent = listing.title;
     document.getElementById('expose-desc').textContent = listing.description;
-    document.getElementById('expose-price').textContent = listing.price;
-    document.getElementById('expose-interval').textContent = listing.price_interval;
+    if (listing.price_interval === 'Zu verschenken') {
+        document.getElementById('expose-price').parentNode.innerHTML = '<span id="expose-price">Zu verschenken</span>';
+        document.getElementById('expose-interval').parentNode.style.display = 'none';
+    } else {
+        document.getElementById('expose-price').textContent = listing.price;
+        document.getElementById('expose-interval').textContent = listing.price_interval;
+    }
     document.getElementById('expose-cat').textContent = listing.category;
     document.getElementById('expose-zip').textContent = listing.zip;
     document.getElementById('expose-city').textContent = listing.city;

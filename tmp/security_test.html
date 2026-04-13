@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Supabase Security Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Supabase Security Verification</h1>
+    <div id="results">Testet...</div>
+
+    <script>
+        const SUPABASE_URL = 'https://ncvxdpammwbgybhdlnwd.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jdnhkcGFtbXdiZ3liaGRsbndkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTA1MjgsImV4cCI6MjA5MDM2NjUyOH0.oo1x1YTel9rK-9lFKmrKcHOmHZLQ--bXq6n4iBubBdQ';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function runTests() {
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+
+            async function log(name, promise) {
+                try {
+                    const { data, error } = await promise;
+                    if (error) {
+                        results.innerHTML += `<p><b>${name}:</b> ❌ Geblockt (Korrekt) - ${error.message}</p>`;
+                    } else {
+                        results.innerHTML += `<p><b>${name}:</b> ✅ Erlaubt - ${JSON.stringify(data)}</p>`;
+                    }
+                } catch (e) {
+                    results.innerHTML += `<p><b>${name}:</b> ❌ Error: ${e.message}</p>`;
+                }
+            }
+
+            // 1. Lesen (Sollte gehen)
+            await log('Öffentliches Lesen (listings)', supabase.from('listings').select('title').limit(1));
+
+            // 2. Erstellen ohne Login (Sollte FEHLSCHLAGEN)
+            await log('Erstellen ohne Login (listings)', supabase.from('listings').insert([{ title: 'SECURITY TEST' }]));
+
+            // 3. Löschen ohne Login (Sollte FEHLSCHLAGEN)
+            await log('Löschen ohne Login (listings)', supabase.from('listings').delete().eq('title', 'SECURITY TEST'));
+            
+            // 4. Blacklist lesen (Sollte gehen für Auth Check)
+            await log('Lesen Blacklist', supabase.from('blacklist').select('email').limit(1));
+        }
+
+        runTests();
+    </script>
+</body>
+</html>

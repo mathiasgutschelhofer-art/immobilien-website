@@ -1,0 +1,16 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#F3F4F6"/>
+  
+  <!-- Camera Icon -->
+  <g transform="translate(360, 220) scale(3.3)">
+    <path d="M4 19C4 19.5523 4.44772 20 5 20H19C19.5523 20 20 19.5523 20 19V7C20 6.44772 19.5523 6 19 6H16L14.5 4H9.5L8 6H5C4.44772 6 4 6.44772 4 7V19Z" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="12" cy="13" r="3" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Slash / Circle-Cross -->
+    <path d="M3 3L21 21" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="400" y="420" text-anchor="middle" fill="#6B7280" style="font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 500;">Leider kein Bild vorhanden</text>
+  <text x="400" y="450" text-anchor="middle" fill="#9CA3AF" style="font-family: 'Inter', sans-serif; font-size: 16px;">Tipp: Bilder erhöhen die Erfolgschancen</text>
+</svg>

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exposé | G-Immobilien</title>
+    <title>Exposé | Platz-Börse</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/banner.css">
     <style>
         .expose-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem; }
-        .gallery-main { width: 100%; height: 450px; object-fit: cover; border-radius: var(--border-radius); border: 1px solid #ddd; margin-bottom: 1rem; transition: height 0.3s; }
+        .gallery-main { width: 100%; height: 400px; object-fit: cover; border-radius: var(--border-radius); border: 1px solid #ddd; margin-bottom: 1rem; }
         .gallery-thumbs { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; }
-        .gallery-thumbs img { width: 100px; height: 75px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: all 0.3s; }
-        .gallery-thumbs img:hover, .gallery-thumbs img.active { border-color: var(--primary-light); opacity: 1; }
+        .gallery-thumbs img { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: all 0.3s; }
+        .gallery-thumbs img:hover, .gallery-thumbs img.active { border-color: var(--secondary-color); opacity: 1; }
         
         .expose-sidebar { display: flex; flex-direction: column; gap: 1rem; }
         .price-box { background: white; border: 1px solid #ddd; border-radius: var(--border-radius); padding: 2rem; text-align: center; box-shadow: var(--box-shadow); }
@@ -24,42 +26,46 @@
 
         @media(max-width: 900px) {
             .expose-layout { grid-template-columns: 1fr; }
-            .gallery-main { height: 300px; }
-            .price-box { padding: 1.5rem; }
-        }
-
-        @media(max-width: 600px) {
-            .gallery-main { height: 220px; }
-            #expose-title { font-size: 1.5rem !important; }
-            .expose-actions { width: 100%; justify-content: space-between; gap: 0.5rem!important; }
-            .expose-actions button { flex: 1; padding: 0.4rem !important; font-size: 0.75rem !important; }
-            .expose-actions button span:last-child { display: none; } /* Hide text, keep icons on tiny screens */
         }
     </style>
 </head>
 <body>
+    <!-- Side Banners -->
+    <div class="side-banner side-banner-left"></div>
+    <div class="side-banner side-banner-right"></div>
 
+            <div class="fixed-header-bg"></div>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <ul class="nav-links">
-                <li><a href="index.html">Startseite</a></li>
-                <li class="dropdown">
+                <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="einstellplaetze.html">Einstellplätze</a>
-                        <a href="parkplaetze.html">Parkplätze</a>
-                        <a href="lagerraeume.html">Lagerräume</a>
-                        <a href="werkstaetten.html">Werkstätten</a>
-                        <a href="tierflaechen.html">Tierflächen</a>
-                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
+                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
+                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
+                        
+                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
+                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
+                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
+                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
                     </div>
                 </li>
+                <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
     </header>
+
 
     <div class="container" style="padding-top: 2rem; min-height: 60vh;">
         <div id="expose-loading" style="text-align: center; padding: 4rem;">
@@ -73,14 +79,14 @@
                     <a href="javascript:history.back()" style="color: var(--text-secondary); text-decoration: underline; margin-bottom: 0.5rem; display: inline-block;">&larr; Zurück</a>
                     <h1 id="expose-title" style="margin: 0; font-size: 2rem;">-</h1>
                 </div>
-                <div class="expose-actions" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
-                    <button id="btn-share" class="btn btn-secondary" style="background: #e1f5fe; color: #0288d1; border: 1px solid #b3e5fc; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button id="btn-share" class="btn btn-secondary" style="background: #e1f5fe; color: #0288d1; border: 1px solid #b3e5fc; display: flex; align-items: center; gap: 0.5rem;">
                         <span id="share-icon">📤</span> <span id="share-text">Teilen</span>
                     </button>
-                    <button id="btn-favorite" class="btn btn-secondary" style="background: #f1f3f5; color: var(--text-color); border: 1px solid #ccc; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
+                    <button id="btn-favorite" class="btn btn-secondary" style="background: #f1f3f5; color: var(--text-color); border: 1px solid #ccc; display: flex; align-items: center; gap: 0.5rem;">
                         <span id="fav-icon">🤍</span> <span id="fav-text">Merken</span>
                     </button>
-                    <button id="btn-report" class="btn btn-secondary" style="background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
+                    <button id="btn-report" class="btn btn-secondary" style="background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2; display: flex; align-items: center; gap: 0.5rem;">
                         <span id="report-icon">🚩</span> <span id="report-text">Melden</span>
                     </button>
                 </div>
@@ -92,7 +98,7 @@
                 <!-- Links: Galerie & Beschreibung -->
                 <div>
                     <div id="gallery-container">
-                        <img id="main-image" src="" alt="Hauptbild" class="gallery-main" onerror="this.src='https://placehold.co/1200x800/eeeeee/aaaaaa?text=Kein+Bild'">
+                        <img id="main-image" src="assets/no-preview.svg" alt="Hauptbild" class="gallery-main">
                         <div id="thumbnails" class="gallery-thumbs"></div>
                     </div>
 
@@ -236,4 +242,12 @@
     <script src="js/expose.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 

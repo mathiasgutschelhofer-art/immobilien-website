@@ -1,56 +1,192 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Prüfstation | G-Immobilien</title>
+    <title>Admin Prüfstation | Platz-Börse</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        .admin-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--secondary-color); padding-bottom: 1rem; flex-wrap: wrap;}
-        .admin-nav a { padding: 0.5rem 1rem; font-weight: bold; color: var(--text-secondary); border-radius: 8px; transition: all 0.2s;}
-        .admin-nav a:hover { background: rgba(0,0,0,0.05); }
-        .admin-nav a.active { background: var(--primary-color); color: white; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">`n    <link rel="stylesheet" href="css/banner.css">
+    
 </head>
-<body>
+<body>`n    <!-- Side Banners -->`n    <div class="side-banner side-banner-left"></div>`n    <div class="side-banner side-banner-right"></div>
+                <div class="fixed-header-bg"></div>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <ul class="nav-links">
-                <!-- Dropdown und Auth wird via JS geladen -->
+                <li class="dropdown category-item">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
+                    <div class="dropdown-content">
+                    <div class="dropdown-content">
+                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
+                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
+                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
+                        
+                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
+                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
+                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
+                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
+                    </div>
+                        <a href="search.html?kategorie=UnÃ¼berdachte PlÃ¤tze" style="padding-left: 2rem !important; font-size: 0.9rem;">â”” UnÃ¼berdachte PlÃ¤tze</a>
+                        <a href="search.html?kategorie=Ãœberdachte PlÃ¤tze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">â”” Garagen & Carports</a>
+                        
+                        <a href="search.html?kategorie=LagerrÃ¤ume & Container">LagerrÃ¤ume & Container</a>
+                        <a href="search.html?kategorie=WerkstÃ¤tten & HobbyrÃ¤ume">WerkstÃ¤tten & HobbyrÃ¤ume</a>
+                        <a href="search.html?kategorie=TierflÃ¤chen (Weiden, StÃ¤lle)">TierflÃ¤chen</a>
+                        <a href="search.html?kategorie=Garten & OutdoorflÃ¤chen">Garten & Outdoor</a>
+                    </div>
+                </li>
+                <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
     </header>
+
 
     <div class="container" style="padding-top: 2rem; min-height: 60vh;">
         <h1 class="section-title" style="text-align: left; margin-bottom: 1rem;">🛡️ Kommandozentrum</h1>
         
         <div class="admin-nav">
-            <a href="admin.html" class="active">Zu Prüfen (Pending)</a>
-            <a href="admin-active.html">Datenbank (Alle Inserate)</a>
-            <a href="admin-reports.html">Gemeldete Anzeigen</a>
-            <a href="admin-users.html">Benutzerverwaltung</a>
+            <a href="admin.html#stats">Ressourcen</a>
+            <a href="admin.html#pending">Zu Prüfen <span id="badge-pending" class="admin-badge" style="display: none;"></span></a>
+            <a href="admin-active.html">Datenbank <span id="badge-active" class="admin-badge" style="display: none;"></span></a>
+            <a href="admin.html#reports">Meldungen <span id="badge-reports" class="admin-badge" style="display: none;"></span></a>
+            <a href="admin.html#users">Benutzer <span id="badge-users" class="admin-badge" style="display: none;"></span></a>
+            <a href="admin.html#system">Wartung</a>
             <a href="dashboard.html" style="margin-left:auto; background: var(--secondary-color); color: black;">← Zurück</a>
         </div>
-
-        <h2>Neue & Bearbeitete Inserate zur Freigabe</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Hier sehen Sie Inserate, die auf Freigabe warten. Inserate, die vom Nutzer nachträglich bearbeitet wurden, sind extra markiert.</p>
         
-        <div id="admin-pending-list" class="properties-grid">
-            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
-                <p>Lade ausstehende Inserate...</p>
+        <section id="stats" style="margin-top: 2rem;">
+            <h2>📊 Supabase Ressourcen-Übersicht</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Echtzeit-Statistiken über Datenbank und Cloud-Speicher (1GB Free Tier).</p>
+            
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <!-- Storage Card -->
+                <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); border-left: 5px solid var(--primary-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0; font-size: 1.1rem;">☁️ Cloud-Speicher</h3>
+                        <span id="storage-percent" style="font-weight: bold; color: var(--primary-color);">0%</span>
+                    </div>
+                    <div style="height: 12px; background: #eee; border-radius: 6px; overflow: hidden; margin-bottom: 10px;">
+                        <div id="storage-bar" style="width: 0%; height: 100%; background: var(--primary-color); transition: width 0.5s ease;"></div>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0; color: #666;">
+                        Benutzt: <strong id="storage-used">0 MB</strong> / 1024 MB
+                    </p>
+                    <p style="font-size: 0.8rem; margin-top: 5px; color: #888;">
+                        Verfügbar: <strong id="storage-left">1024 MB</strong>
+                    </p>
+                </div>
+
+                <!-- Database Stats -->
+                <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); border-left: 5px solid #2e7d32;">
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">🗄️ Datenbank-Einträge</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Gesamt-Inserate:</span>
+                            <strong id="stat-total-listings">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #666;">
+                            <span>- Aktiv:</span>
+                            <span id="stat-active-listings">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #666;">
+                            <span>- Ausstehend:</span>
+                            <span id="stat-pending-listings">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Stats -->
+                <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); border-left: 5px solid #ffa000;">
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">👥 Benutzer & Meldungen</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Aktive User (geschätzt):</span>
+                            <strong id="stat-total-users">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #d32f2f;">
+                            <span>Offene Meldungen:</span>
+                            <strong id="stat-total-reports">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #666;">
+                            <span>Blacklist Einträge:</span>
+                            <span id="stat-blacklist-count">0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section id="pending" style="margin-top: 2rem;">
+            <h2>Neue & Bearbeitete Inserate zur Freigabe</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Hier sehen Sie Inserate, die auf Freigabe warten. Inserate, die vom Nutzer nachträglich bearbeitet wurden, sind extra markiert.</p>
+            <div id="admin-pending-list" class="properties-grid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                    <p>Lade ausstehende Inserate...</p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section id="reports" style="margin-top: 4rem;">
+            <h2>🚨 Gemeldete Anzeigen</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Diese Inserate wurden von Nutzern gemeldet. Bitte prüfen und ggf. löschen.</p>
+            <div id="admin-reports-list" class="properties-grid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                    <p>Lade Meldungen...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="users" style="margin-top: 4rem;">
+            <h2>👥 Benutzerverwaltung</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Übersicht aller verifizierten Profile. Sie können Nutzer sperren (Blacklist) oder komplett mitsamt ihrer Inserate löschen.</p>
+            <div style="overflow-x: auto;">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Kontakt Email</th>
+                            <th>Profil ID</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-users-list">
+                        <tr><td colspan="5" style="text-align: center; padding: 2rem;">Lade Benutzer...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="system" style="margin-top: 4rem; padding: 2rem; background: #fff1f1; border: 1px solid #ffcdd2; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+            <h2 style="color: #b71c1c; margin-bottom: 0.5rem;">⚙️ Systemwartung & Datenpflege</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Hier können Sie verwaiste Bilder (Dateileichen) im Cloud-Speicher suchen und entfernen. Dies betrifft Bilder, die in der Datenbank keinem Inserat mehr zugeordnet sind.</p>
+            
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <button id="cleanup-storage-btn" class="btn" style="background: #b71c1c; color: white; padding: 0.7rem 1.5rem;">🔍 Speicher analysieren & bereinigen</button>
+                <div id="cleanup-feedback" style="font-size: 0.9rem; font-weight: bold; color: #b71c1c;"></div>
+            </div>
+            <p style="font-size: 0.8rem; color: #888; margin-top: 1rem;">Hinweis: Dieser Vorgang ist endgültig und kann nicht rückgängig gemacht werden.</p>
+        </section>
     </div>
 
     <footer>
         <div class="footer-content">
             <div class="footer-col" style="flex: 2;">
-                <h4>G-Immobilien Admin</h4>
-                <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
+                <h4>Platz-Börse Admin</h4>
+                <p style="color: #aaa;">Interne Verwaltungsebene der Platz-Börse.</p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -63,4 +199,15 @@
     <script src="js/admin.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 

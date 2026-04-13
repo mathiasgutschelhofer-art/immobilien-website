@@ -98,31 +98,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        // --- MOBIL MENÜ LOGIK ---
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', () => {
-                menuToggle.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-
-            // Schließen bei Klick auf Link
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
-                });
-            });
-
-            // Schließen bei Klick außerhalb
-            document.addEventListener('click', (e) => {
-                if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                    menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
-                }
-            });
+        // --- PROFIL SEITEN LOGIK ---
+        if (window.location.pathname.includes('profil.html') && session) {
+            initProfilePage(supabase, session.user);
         }
 
     } catch (globalError) {
@@ -133,19 +111,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function updateNavbar(session, supabase) {
     const navLinksList = document.querySelector('.nav-links');
     
-    // Logo "Startseite" Hack (Verknüpfung)
-    const logoContainer = document.querySelector('.logo-container');
-    if (logoContainer && !logoContainer.querySelector('h2')) {
-        logoContainer.style.display = "flex";
-        logoContainer.style.alignItems = "center";
-        logoContainer.style.gap = "1rem";
-        logoContainer.style.textDecoration = "none";
-        logoContainer.innerHTML += `<h2 style="margin: 0; color: var(--primary-color); font-size: 1.5rem; display: none;" class="logo-text-desktop">Startseite</h2>`;
-        // Quick CSS to hide on mobile
-        const style = document.createElement('style');
-        style.innerHTML = `@media(min-width: 768px){ .logo-text-desktop { display: block !important; } }`;
-        document.head.appendChild(style);
-    }
 
     if (!navLinksList) return;
 
@@ -296,45 +261,191 @@ function initProfilePage(supabase, user) {
         else { msg.style.color = "green"; msg.textContent = "Daten aktualisiert!"; }
     });
 
-    // 3. Email ändern
-    document.getElementById('profile-email-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const msg = document.getElementById('msg-email');
-        const newEmail = document.getElementById('new-email').value;
-        msg.style.color = "black"; msg.textContent = "Lade...";
+    // 3. Email ändern (mit Modal)
+    const emailModal = document.getElementById('email-modal');
+    const openEmailBtn = document.getElementById('open-email-modal-btn');
+    const closeEmailBtn = document.getElementById('close-email-btn');
 
-        const { error } = await supabase.auth.updateUser({ email: newEmail });
-        if(error) { msg.style.color = "red"; msg.textContent = "Fehler: " + error.message; }
-        else { msg.style.color = "green"; msg.textContent = "Bestätigungslinks wurden an beide E-Mails geschickt."; }
-    });
-
-    // 4. Passwort ändern
-    document.getElementById('profile-password-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const msg = document.getElementById('msg-pw');
-        const newPw = document.getElementById('new-pw').value;
-        msg.style.color = "black"; msg.textContent = "Lade...";
-
-        const { error } = await supabase.auth.updateUser({ password: newPw });
-        if(error) { msg.style.color = "red"; msg.textContent = "Fehler: " + error.message; }
-        else { msg.style.color = "green"; msg.textContent = "Passwort erfolgreich geändert."; }
-    });
-
-    // 5. Account löschen (Gefahrenzone)
-    document.getElementById('delete-account-btn').addEventListener('click', async () => {
-        if(!confirm("Möchten Sie Ihren Account wirklich endgültig deaktivieren? Ihr Profilname und alle Daten werden gelöscht. Sie werden sofort ausgeloggt.")) return;
-        
-        // Da 'deleteUser' serverseitig ist, überschreiben wir lokal alle Daten mit "Gelöscht"
-        await supabase.auth.updateUser({
-            data: { 
-                name: "Gelöscht", avatar_url: null, plz: null, ort: null, land: null, geschlecht: null, phone: null 
-            }
+    if(openEmailBtn && emailModal && closeEmailBtn) {
+        openEmailBtn.addEventListener('click', () => {
+            emailModal.style.display = 'flex';
+            document.getElementById('profile-email-form').reset();
+            document.getElementById('msg-email-modal').style.display = 'none';
+            document.getElementById('msg-email-main').textContent = '';
         });
         
-        alert("Ihr Account wurde erfolgreich deaktiviert. Melden Sie sich bei Bedarf beim Support für eine komplette Löschung.");
-        await supabase.auth.signOut();
-        window.location.href = "index.html";
-    });
+        closeEmailBtn.addEventListener('click', () => emailModal.style.display = 'none');
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === emailModal) emailModal.style.display = 'none';
+        });
+    }
+
+    const emailForm = document.getElementById('profile-email-form');
+    if(emailForm) {
+        emailForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('msg-email-modal');
+            const msgMain = document.getElementById('msg-email-main');
+            
+            const oldPw = document.getElementById('old-pw-email').value;
+            const newEmail = document.getElementById('new-email').value;
+            
+            msg.style.color = "black"; 
+            msg.style.display = "block";
+            msg.textContent = "Überprüfe Berechtigung...";
+
+            const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
+                email: currentUser.email,
+                password: oldPw
+            });
+
+            if (signInError) {
+                msg.style.color = "red"; 
+                msg.textContent = "Fehler: Das Passwort ist inkorrekt.";
+                return;
+            }
+
+            msg.textContent = "Sende Bestätigungslinks...";
+
+            const { error: updateError } = await supabase.auth.updateUser({ email: newEmail });
+            
+            if(updateError) { 
+                msg.style.color = "red"; 
+                msg.textContent = "Fehler: " + updateError.message; 
+            } else { 
+                if (emailModal) emailModal.style.display = 'none';
+                if (msgMain) msgMain.textContent = "Bestätigungslinks wurden an beide E-Mails geschickt.";
+            }
+        });
+    }
+
+    // 4. Passwort ändern (mit Modal)
+    const pwModal = document.getElementById('pw-modal');
+    const openPwBtn = document.getElementById('open-pw-modal-btn');
+    const closePwBtn = document.getElementById('close-pw-btn');
+
+    if(openPwBtn && pwModal && closePwBtn) {
+        openPwBtn.addEventListener('click', () => {
+            pwModal.style.display = 'flex';
+            document.getElementById('profile-password-form').reset();
+            document.getElementById('msg-pw-modal').style.display = 'none';
+            document.getElementById('msg-pw-main').textContent = '';
+        });
+        
+        closePwBtn.addEventListener('click', () => pwModal.style.display = 'none');
+        
+        // Close when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === pwModal) pwModal.style.display = 'none';
+        });
+    }
+
+    const pwForm = document.getElementById('profile-password-form');
+    if(pwForm) {
+        pwForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('msg-pw-modal');
+            const msgMain = document.getElementById('msg-pw-main');
+            
+            const oldPw = document.getElementById('old-pw').value;
+            const newPw = document.getElementById('new-pw').value;
+            const confirmPw = document.getElementById('confirm-pw').value;
+            
+            if(newPw !== confirmPw) {
+                msg.style.color = "red"; 
+                msg.style.display = "block";
+                msg.textContent = "Fehler: Die neuen Passwörter stimmen nicht überein.";
+                return;
+            }
+
+            msg.style.color = "black"; 
+            msg.style.display = "block";
+            msg.textContent = "Überprüfe Berechtigung...";
+
+            // Verify old password by attempting to sign in
+            const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
+                email: currentUser.email,
+                password: oldPw
+            });
+
+            if (signInError) {
+                msg.style.color = "red"; 
+                msg.textContent = "Fehler: Das alte Passwort ist inkorrekt.";
+                return;
+            }
+
+            msg.textContent = "Aktualisiere Passwort...";
+
+            // Update to new password
+            const { error: updateError } = await supabase.auth.updateUser({ password: newPw });
+            
+            if(updateError) { 
+                msg.style.color = "red"; 
+                msg.textContent = "Fehler: " + updateError.message; 
+            } else { 
+                if (pwModal) pwModal.style.display = 'none';
+                if (msgMain) msgMain.textContent = "Passwort erfolgreich sicher geändert.";
+            }
+        });
+    }
+
+    // 5. Account löschen (Gefahrenzone, mit Modal)
+    const deleteModal = document.getElementById('delete-modal');
+    const openDeleteBtn = document.getElementById('open-delete-modal-btn');
+    const closeDeleteBtn = document.getElementById('close-delete-btn');
+
+    if(openDeleteBtn && deleteModal && closeDeleteBtn) {
+        openDeleteBtn.addEventListener('click', () => {
+            deleteModal.style.display = 'flex';
+            document.getElementById('profile-delete-form').reset();
+            document.getElementById('msg-delete-modal').style.display = 'none';
+            document.getElementById('msg-delete-main').textContent = '';
+        });
+        
+        closeDeleteBtn.addEventListener('click', () => deleteModal.style.display = 'none');
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === deleteModal) deleteModal.style.display = 'none';
+        });
+    }
+
+    const deleteForm = document.getElementById('profile-delete-form');
+    if(deleteForm) {
+        deleteForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('msg-delete-modal');
+            const oldPw = document.getElementById('old-pw-delete').value;
+            
+            msg.style.color = "black"; 
+            msg.style.display = "block";
+            msg.textContent = "Überprüfe Berechtigung...";
+
+            const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
+                email: currentUser.email,
+                password: oldPw
+            });
+
+            if (signInError) {
+                msg.style.color = "red"; 
+                msg.textContent = "Fehler: Das Passwort ist inkorrekt.";
+                return;
+            }
+
+            msg.textContent = "Deaktiviere Account...";
+
+            // Da 'deleteUser' serverseitig ist, überschreiben wir lokal alle Daten mit "Gelöscht"
+            await supabase.auth.updateUser({
+                data: { 
+                    name: "Gelöscht", avatar_url: null, plz: null, ort: null, land: null, geschlecht: null, phone: null 
+                }
+            });
+            
+            alert("Ihr Account wurde erfolgreich deaktiviert und Ihre Profildaten anonymisiert. Sie werden nun ausgeloggt.");
+            await supabase.auth.signOut();
+            window.location.href = "index.html";
+        });
+    }
 
     // 6. Favoriten laden
     const favContainer = document.getElementById('favorites-container');

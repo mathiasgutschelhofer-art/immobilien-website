@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Das dunkle Quadrat füllt nun fast die ganze Fläche aus -->
+  <rect x="2" y="2" width="40" height="40" rx="8" fill="#0b2545"/>
+  <!-- Das P ist zentriert und größer -->
+  <path d="M15 32V12H23C26.3137 12 29 14.6863 29 18C29 21.3137 26.3137 24 23 24H15" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Der gelbe Punkt sitzt präzise in der Ecke und nutzt den restlichen Platz -->
+  <rect x="32" y="32" width="14" height="14" rx="4" fill="#ff9800"/>
+</svg>

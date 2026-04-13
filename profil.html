@@ -1,72 +1,56 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Profil | G-Immobilien</title>
+    <title>Mein Profil | Platz-Börse</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/banner.css">
     <style>
-        .profile-container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-        @media (max-width: 768px) {
-            .profile-container { grid-template-columns: 1fr; }
-        }
-        .panel {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin-bottom: 2rem;
-        }
-        .avatar-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .avatar-option {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.2s ease;
-        }
+        .avatar-grid { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+        .avatar-option { width: 45px; height: 45px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
         .avatar-option:hover { transform: scale(1.1); }
-        .avatar-option.selected { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(13, 71, 161, 0.4); transform: scale(1.1); }
-        .danger-zone { border: 1px solid red; background: #fff5f5; }
-        .msg-box { margin-bottom: 1rem; font-weight: bold; text-align: center; }
+        .avatar-option.selected { border-color: var(--primary-color); transform: scale(1.1); }
     </style>
 </head>
 <body>
+    <div class="side-banner side-banner-left"></div>
+    <div class="side-banner side-banner-right"></div>
+                <div class="fixed-header-bg"></div>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
-                <h2 style="margin: 0; color: var(--primary-color); font-size: 1.5rem;">Startseite</h2>
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <ul class="nav-links">
-                <li class="dropdown">
-                    <a href="#" style="cursor: default;">Kategorien ?</a>
+                <li class="dropdown category-item">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="einstellplaetze.html">Einstellpl�tze</a>
-                        <a href="parkplaetze.html">Parkpl�tze</a>
-                        <a href="lagerraeume.html">Lagerr�ume</a>
-                        <a href="werkstaetten.html">Werkst�tten</a>
-                        <a href="tierflaechen.html">Tierfl�chen</a>
-                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
+                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
+                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
+                        
+                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
+                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
+                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
+                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
                     </div>
                 </li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
     </header>
+
 
     <div class="container" style="padding-top: 2rem;">
         <h1 class="section-title" style="text-align: left;">Accounteinstellungen</h1>
@@ -85,7 +69,7 @@
             <div>
                 <!-- P0: Favoriten -->
                 <div class="panel" style="background: #f8f9fa; border: 1px solid #e9ecef;">
-                    <h3 style="display: flex; align-items: center; gap: 0.5rem;">?? Meine gemerkten Inserate</h3>
+                    <h3 style="display: flex; align-items: center; gap: 0.5rem;">⭐ Meine gemerkten Inserate</h3>
                     <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Ihre Favoriten-Liste. Klicken Sie auf ein Inserat, um es im Detail anzusehen.</p>
                     <div id="favorites-container" class="properties-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); row-gap: 1.5rem;">
                         <p style="font-size: 0.9rem;">Lade Favoriten...</p>
@@ -94,8 +78,8 @@
 
                 <!-- P1: Avatar Wahl -->
                 <div class="panel">
-                    <h3>Profilbild ausw�hlen</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">W�hlen Sie einen Comic-Avatar, der Sie repr�sentiert.</p>
+                    <h3>Profilbild auswählen</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Wählen Sie einen Avatar, der Sie repräsentiert.</p>
                     <div class="avatar-grid" id="avatar-selection-grid">
                         <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver&backgroundColor=b6e3f4" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver&backgroundColor=b6e3f4">
                         <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=c0aede" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=c0aede">
@@ -108,6 +92,15 @@
                         <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Avery&backgroundColor=d1d4f9" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Avery&backgroundColor=d1d4f9">
                         <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Destiny&backgroundColor=ffdfbf" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Destiny&backgroundColor=ffdfbf">
                         <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ariel&backgroundColor=ffd5dc" class="avatar-option" data-url="https://api.dicebear.com/7.x/adventurer/svg?seed=Ariel&backgroundColor=ffd5dc">
+
+                        <!-- Tier-Avatare -->
+                        <img src="assets/avatars/horse.png" class="avatar-option" data-url="assets/avatars/horse.png">
+                        <img src="assets/avatars/sheep.png" class="avatar-option" data-url="assets/avatars/sheep.png">
+                        <img src="assets/avatars/cat.png" class="avatar-option" data-url="assets/avatars/cat.png">
+                        <img src="assets/avatars/dog.png" class="avatar-option" data-url="assets/avatars/dog.png">
+                        <img src="assets/avatars/cow.png" class="avatar-option" data-url="assets/avatars/cow.png">
+                        <img src="assets/avatars/rooster.png" class="avatar-option" data-url="assets/avatars/rooster.png">
+                        <img src="assets/avatars/hen.png" class="avatar-option" data-url="assets/avatars/hen.png">
                     </div>
                     <button class="btn btn-primary" id="save-avatar-btn" style="margin-top: 1.5rem;">Avatar speichern</button>
                     <p id="msg-avatar" class="msg-box" style="margin-top: 1rem; color: green;"></p>
@@ -115,7 +108,7 @@
 
                 <!-- P2: Profil komplettieren -->
                 <div class="panel">
-                    <h3>Profil vervollst�ndigen (Optional)</h3>
+                    <h3>Profil vervollständigen (Optional)</h3>
                     <form id="profile-meta-form" style="margin-top: 1rem;">
                         <div style="display: flex; gap: 1rem;">
                             <div class="form-group" style="flex: 1;">
@@ -134,8 +127,8 @@
                         <div class="form-group">
                             <label for="prof-geschlecht">Geschlecht</label>
                             <select id="prof-geschlecht" class="form-control">
-                                <option value="">Bitte w�hlen...</option>
-                                <option value="m�nnlich">M�nnlich</option>
+                                <option value="">Bitte wählen...</option>
+                                <option value="männlich">Männlich</option>
                                 <option value="weiblich">Weiblich</option>
                                 <option value="divers">Divers</option>
                             </select>
@@ -145,54 +138,108 @@
                     </form>
                 </div>
 
-                <!-- P3: E-Mail �ndern -->
+                <!-- P3: E-Mail ändern -->
                 <div class="panel">
-                    <h3>E-Mail �ndern</h3>
-                    <form id="profile-email-form" style="margin-top: 1rem;">
-                        <div class="form-group">
-                            <label for="new-email">Neue E-Mail Adresse</label>
-                            <input type="email" id="new-email" class="form-control" required placeholder="neue@mail.de">
-                        </div>
-                        <button type="submit" class="btn btn-secondary">Mail anfordern</button>
-                        <p id="msg-email" class="msg-box" style="margin-top: 1rem;"></p>
-                    </form>
+                    <button id="open-email-modal-btn" class="btn btn-secondary">E-Mail ändern</button>
+                    <p id="msg-email-main" class="msg-box" style="margin-top: 1rem; color: green;"></p>
                 </div>
 
-                <!-- P4: PW �ndern -->
+                <!-- P4: PW ändern -->
                 <div class="panel">
-                    <h3>Passwort �ndern</h3>
-                    <form id="profile-password-form" style="margin-top: 1rem;">
-                        <div class="form-group">
-                            <label for="new-pw">Neues Passwort</label>
-                            <input type="password" id="new-pw" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-secondary">Passwort aktualisieren</button>
-                        <p id="msg-pw" class="msg-box" style="margin-top: 1rem;"></p>
-                    </form>
+                    <button id="open-pw-modal-btn" class="btn btn-secondary">Passwort ändern</button>
+                    <p id="msg-pw-main" class="msg-box" style="margin-top: 1rem; color: green;"></p>
                 </div>
 
                 <!-- P5: Danger Zone -->
                 <div class="panel danger-zone">
-                    <h3 style="color: red;">Account l�schen</h3>
-                    <p style="font-size: 0.9rem;">Wenn Sie Ihren Account l�schen, werden alle Ihre pers�nlichen Daten unwiderruflich aus unserem System gel�scht.</p>
-                    <button class="btn btn-secondary" id="delete-account-btn" style="background-color: transparent; color: red; border: 2px solid red; margin-top: 1rem;">Account endg�ltig l�schen</button>
+                    <button class="btn btn-secondary" id="open-delete-modal-btn" style="background-color: transparent; color: red; border: 2px solid red; margin-top: 1rem;">Account endgültig löschen</button>
+                    <p id="msg-delete-main" class="msg-box" style="margin-top: 1rem; color: green;"></p>
                 </div>
 
             </div>
         </div>
     </div>
 
+    <!-- Passwort Modal -->
+    <div id="pw-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 450px;">
+            <button id="close-pw-btn" class="modal-close">&times;</button>
+            <h2 style="margin-top: 0; color: var(--primary-color);">Passwort ändern</h2>
+            <form id="profile-password-form" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label for="old-pw">Bisheriges Passwort</label>
+                    <input type="password" id="old-pw" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-pw">Neues Passwort</label>
+                    <input type="password" id="new-pw" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-pw">Neues Passwort wiederholen</label>
+                    <input type="password" id="confirm-pw" class="form-control" required>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p id="msg-pw-modal" class="msg-box" style="display: none; margin-bottom: 1rem;"></p>
+                    <button type="submit" id="submit-pw-btn" class="btn btn-primary" style="width: 100%;">Sicher aktualisieren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- E-Mail Modal -->
+    <div id="email-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 450px;">
+            <button id="close-email-btn" class="modal-close">&times;</button>
+            <h2 style="margin-top: 0; color: var(--primary-color);">E-Mail ändern</h2>
+            <form id="profile-email-form" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label for="old-pw-email">Aktuelles Passwort</label>
+                    <input type="password" id="old-pw-email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-email">Neue E-Mail Adresse</label>
+                    <input type="email" id="new-email" class="form-control" required placeholder="neue@mail.de">
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p id="msg-email-modal" class="msg-box" style="display: none; margin-bottom: 1rem;"></p>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">E-Mail aktualisieren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Account Löschen Modal -->
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 450px;">
+            <button id="close-delete-btn" class="modal-close">&times;</button>
+            <h2 style="margin-top: 0; color: red;">Account löschen</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                Sind Sie sicher? Diese Aktion ist endgültig und deaktiviert Ihren Zugang sofort. Bitte bestätigen Sie mit Ihrem Passwort.
+            </p>
+            <form id="profile-delete-form" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label for="old-pw-delete">Aktuelles Passwort</label>
+                    <input type="password" id="old-pw-delete" class="form-control" required>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p id="msg-delete-modal" class="msg-box" style="display: none; margin-bottom: 1rem;"></p>
+                    <button type="submit" class="btn" style="background-color: red; color: white; width: 100%;">Unwiderruflich löschen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <div class="footer-content">
             <div class="footer-col" style="flex: 2;">
-                <h4>G-Immobilien</h4>
+                <h4>Platz-Börse</h4>
                 <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
             </div>
             <div class="footer-col" style="flex: 2;">
                 <h4>Rechtliches</h4>
                 <ul>
                     <li><a href="impressum.html">Impressum</a></li>
-                    <li><a href="datenschutz.html">Datenschutzerkl�rung</a></li>
+                    <li><a href="datenschutz.html">Datenschutzerklärung</a></li>
                     <li><a href="agb.html">AGB</a></li>
                 </ul>
             </div>
@@ -205,4 +252,15 @@
     <script src="js/auth.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 

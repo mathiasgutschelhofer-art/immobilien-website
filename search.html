@@ -1,34 +1,49 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immobilien Suchergebnisse | G-Immobilien</title>
-    <meta name="description" content="Finden Sie Ihre Nischenimmobilie in unseren Suchergebnissen. Filtern Sie nach Ort und Kategorie, um das perfekte Inserat auf G-Immobilien zu finden.">
+    <title>Suche Ergebnisse | Platz-Börse</title>
+    <meta name="description" content="Finden Sie Ihren Platz in unseren Suchergebnissen. Filtern Sie nach Ort und Kategorie, um das perfekte Inserat auf der Platz-Börse zu finden.">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/banner.css">
 </head>
 <body>
+    <!-- Side Banners -->
+    <div class="side-banner side-banner-left"></div>
+    <div class="side-banner side-banner-right"></div>
 
+    <div class="fixed-header-bg"></div>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <ul class="nav-links">
-                <li><a href="index.html">Startseite</a></li>
-                <li class="dropdown">
+                <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="einstellplaetze.html">Einstellplätze</a>
-                        <a href="parkplaetze.html">Parkplätze</a>
-                        <a href="lagerraeume.html">Lagerräume</a>
-                        <a href="werkstaetten.html">Werkstätten</a>
-                        <a href="tierflaechen.html">Tierflächen</a>
-                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
+                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
+                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
+                        
+                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
+                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
+                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
+                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
                     </div>
                 </li>
+                <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
     </header>
@@ -38,24 +53,54 @@
         
         <div class="search-container" style="background: rgba(0,0,0,0.03); padding: 1.5rem; border-radius: 8px; max-width: 800px; margin: 0 auto 3rem auto;">
             <form action="search.html" method="GET" id="hero-search-form" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <div style="flex: 2; min-width: 200px;">
-                    <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box;">
+                <div style="flex: 1.5; min-width: 150px;">
+                    <input type="text" name="ort" id="search-location" placeholder="Ort / PLZ..." style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box;">
                 </div>
-                <div style="flex: 2; min-width: 150px;">
+                <div style="flex: 1.5; min-width: 150px;">
                     <select name="kategorie" id="search-category" style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; background: white; box-sizing: border-box;">
                         <option value="">Alle Kategorien</option>
-                        <option value="Einstellplätze">Einstellplätze</option>
-                        <option value="Parkplätze">Parkplätze</option>
-                        <option value="Lagerräume">Lagerräume</option>
-                        <option value="Werkstätten">Werkstätten</option>
-                        <option value="Tierflächen">Tierflächen</option>
-                        <option value="Garten & Outdoor">Garten & Outdoor</option>
+                        <option value="Plätze für Fahrzeuge">Plätze für Fahrzeuge</option>
+                        <option value="Lagerräume & Container">Lagerräume & Container</option>
+                        <option value="Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</option>
+                        <option value="Tierflächen (Weiden, Ställe)">Tierflächen (Weiden, Ställe)</option>
+                        <option value="Garten & Outdoorflächen">Garten & Outdoorflächen</option>
+                    </select>
+                </div>
+                <div style="flex: 1.5; min-width: 150px;">
+                    <select name="transaktion" id="search-transaction" style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; background: white; box-sizing: border-box;">
+                        <option value="">Alle Optionen</option>
+                        <option value="Mieten">Miete / Pacht</option>
+                        <option value="Kaufen">Kauf</option>
+                        <option value="Verschenken">Zu verschenken</option>
                     </select>
                 </div>
                 <div style="flex: 1; min-width: 120px;">
-                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1rem; border-radius: 4px; width: 100%; height: 100%; box-sizing: border-box;">Erneut Suchen</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1rem; border-radius: 4px; width: 100%; height: 100%; box-sizing: border-box;">Suchen</button>
                 </div>
             </form>
+            
+            <!-- Erweiterte Filter für Maße -->
+            <div id="advanced-filters" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #ddd; display: none;">
+                <p style="font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-primary);">📏 Mindestmaße (optional):</p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 100px;">
+                        <label style="display: block; font-size: 0.75rem; color: #666; margin-bottom: 4px;">Min. Länge (m)</label>
+                        <input type="number" name="min_l" id="search-min-l" step="0.1" placeholder="z.B. 7.0" style="width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1; min-width: 100px;">
+                        <label style="display: block; font-size: 0.75rem; color: #666; margin-bottom: 4px;">Min. Breite (m)</label>
+                        <input type="number" name="min_b" id="search-min-b" step="0.1" placeholder="z.B. 2.5" style="width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1; min-width: 100px;">
+                        <label style="display: block; font-size: 0.75rem; color: #666; margin-bottom: 4px;">Min. Höhe (m)</label>
+                        <input type="number" name="min_h" id="search-min-h" step="0.1" placeholder="z.B. 3.0" style="width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" id="toggle-filters-btn" style="margin-top: 1rem; background: none; border: none; color: var(--primary-color); cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: underline; padding: 0;">
+                + Maße-Filter (Länge/Breite/Höhe) einblenden
+            </button>
         </div>
 
         <div id="search-results-container" class="properties-grid">
@@ -77,4 +122,5 @@
     <script src="js/search.js"></script>
 </body>
 </html>
+
 

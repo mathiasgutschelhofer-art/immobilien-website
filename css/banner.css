@@ -1,0 +1,147 @@
+/* Side Banners (Horse & Garages) */
+.side-banner {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 20vw;
+    background-image: url('../assets/Banner.png');
+    background-size: cover;
+    z-index: -1;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.side-banner-left {
+    left: 0;
+    background-size: 200% 100%;
+    background-position: 0% center; /* Split line (50%) aligns with right edge */
+    /* Perfectly sharp edges */
+    mask-image: none;
+    -webkit-mask-image: none;
+    box-shadow: none;
+}
+
+.side-banner-right {
+    right: 0;
+    background-size: 200% 100%;
+    background-position: 100% center; /* Split line (50%) aligns with left edge */
+    /* Perfectly sharp edges */
+    mask-image: none;
+    -webkit-mask-image: none;
+    box-shadow: none;
+}
+
+@media (min-width: 1201px) {
+    /* For the Mission section background */
+    .mission-container {
+        background: linear-gradient(to right, 
+            transparent 0%, 
+            transparent 20vw, 
+            #0b2545 20vw, 
+            #0b2545 80vw, 
+            transparent 80vw, 
+            transparent 100%
+        ) !important;
+    }
+
+    /* For the Footer background */
+    footer {
+        background: linear-gradient(to right, 
+            transparent 0%, 
+            transparent 20vw, 
+            #1a1a1a 20vw, 
+            #1a1a1a 80vw, 
+            transparent 80vw, 
+            transparent 100%
+        ) !important;
+    }
+
+    /* 
+       For the Hero section & Fixed Header:
+       We use a "to right" gradient to create transparent side-gutters,
+       allowing the banners behind it to be seen.
+       The middle part remains blue with the background image.
+    */
+    .banner-reveal-hero {
+        background: linear-gradient(to right, 
+            transparent 0%, 
+            transparent 20vw, 
+            rgba(11, 37, 69, 0.96) 20vw, 
+            rgba(11, 37, 69, 0.9) 50%,
+            rgba(11, 37, 69, 0.96) 80vw, 
+            transparent 80vw, 
+            transparent 100%
+        ) !important;
+        position: relative;
+    }
+    
+    .fixed-header-bg {
+        background: linear-gradient(to right, 
+            transparent 0%, 
+            transparent 20vw, 
+            rgba(11, 37, 69, 0.96) 20vw, 
+            rgba(11, 37, 69, 0.9) 50%,
+            rgba(11, 37, 69, 0.96) 80vw, 
+            transparent 80vw, 
+            transparent 100%
+        ) !important;
+    }
+    
+    /* Center the animated background to match the content area */
+    .hero-bg-animated {
+        width: 60vw !important; /* 100vw - 2x 20vw gutters */
+        left: 20vw !important;
+    }
+    
+    .hero-overlay {
+        background: rgba(11, 37, 69, 0.2) !important;
+        width: 60vw !important;
+        left: 20vw !important;
+    }
+}
+
+/* Limit banner width on ultra-wide screens */
+@media (min-width: 2500px) {
+    .side-banner { width: 450px; }
+}
+
+/* Adjust banner width on medium-large screens */
+@media (max-width: 1600px) {
+    .side-banner { width: 15vw; }
+    .banner-reveal-hero {
+        background: linear-gradient(to right, 
+            transparent 0, transparent 15vw, 
+            rgba(11, 37, 69, 0.96) 15vw, rgba(11, 37, 69, 0.9) 50%, rgba(11, 37, 69, 0.96) 85vw, 
+            transparent 85vw, transparent 100%
+        ) !important;
+    }
+    .fixed-header-bg {
+        background: linear-gradient(to right, 
+            transparent 0, transparent 15vw, 
+            rgba(11, 37, 69, 0.96) 15vw, rgba(11, 37, 69, 0.9) 50%, rgba(11, 37, 69, 0.96) 85vw, 
+            transparent 85vw, transparent 100%
+        ) !important;
+    }
+    .mission-container {
+        background: linear-gradient(to right, 
+            transparent 0, transparent 15vw, 
+            #0b2545 15vw, #0b2545 85vw, 
+            transparent 85vw, transparent 100%
+        ) !important;
+    }
+    footer {
+        background: linear-gradient(to right, 
+            transparent 0, transparent 15vw, 
+            #1a1a1a 15vw, #1a1a1a 85vw, 
+            transparent 85vw, transparent 100%
+        ) !important;
+    }
+}
+
+/* Hide banners on mobile/tablet */
+@media (max-width: 1200px) {
+    .side-banner { display: none; }
+    .fixed-header-bg {
+        background: linear-gradient(135deg, rgba(11, 37, 69, 0.95), rgba(11, 37, 69, 0.95)) !important;
+    }
+}

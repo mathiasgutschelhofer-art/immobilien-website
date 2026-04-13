@@ -25,9 +25,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function loadAdminListings() {
         // PENDING PAGE LOGIC
+        const { data: pendingData, error: pendingErr } = await supabase.from('listings').select('*').eq('status', 'pending').order('created_at', { ascending: false });
+        
+        const badgePending = document.getElementById('badge-pending');
+        if (badgePending && !pendingErr) {
+            badgePending.textContent = pendingData.length;
+            badgePending.style.display = pendingData.length > 0 ? 'inline-block' : 'none';
+        }
+        
         if (pendingContainer) {
-            const { data: pendingData, error: pendingErr } = await supabase.from('listings').select('*').eq('status', 'pending').order('created_at', { ascending: false });
-            
             if(pendingErr) pendingContainer.innerHTML = `<p style="color:red">Fehler: ${pendingErr.message}</p>`;
             else if(pendingData.length === 0) pendingContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);"><p>✅ Vollständig abgewickelt! Keine neuen Inserate zur Freigabe.</p></div>`;
             else {
@@ -66,9 +72,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // ACTIVE PAGE LOGIC
+        const { data: activeData, error: activeErr } = await supabase.from('listings').select('*').in('status', ['active', 'paused', 'expired']).order('created_at', { ascending: false });
+        
+        const badgeActive = document.getElementById('badge-active');
+        if (badgeActive && !activeErr) {
+            badgeActive.textContent = activeData.length;
+            badgeActive.style.display = 'inline-block';
+            badgeActive.style.background = '#888';
+        }
+        
         if (activeContainer) {
-            const { data: activeData, error: activeErr } = await supabase.from('listings').select('*').in('status', ['active', 'paused', 'expired']).order('created_at', { ascending: false });
-            
             if(activeErr) activeContainer.innerHTML = `<p style="color:red">Fehler: ${activeErr.message}</p>`;
             else if(activeData.length === 0) activeContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow);"><p>Die Datenbank ist komplett leer.</p></div>`;
             else {
@@ -137,9 +150,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const usersContainer = document.getElementById('admin-users-list');
 
     async function loadAdminReports() {
-        if (!reportsContainer) return;
-
         const { data: reportsData, error: reportsErr } = await supabase.from('reports').select('*, listings(*)').order('created_at', { ascending: false });
+        
+        const badgeReports = document.getElementById('badge-reports');
+        if (badgeReports && !reportsErr) {
+            badgeReports.textContent = reportsData ? reportsData.length : 0;
+            badgeReports.style.display = (reportsData && reportsData.length > 0) ? 'inline-block' : 'none';
+        }
+
+        if (!reportsContainer) return;
         
         if (reportsErr) {
             reportsContainer.innerHTML = `<p style="color:red">Fehler beim Laden der Reports: ${reportsErr.message}</p>`;
@@ -189,12 +208,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function loadAdminUsers() {
-        if (!usersContainer) return;
-        
         const { data: listingsData, error: lErr } = await supabase.from('listings').select('user_id, contact_name, contact_email');
         const { data: blacklistData, error: bErr } = await supabase.from('blacklist').select('*');
-
-        if(lErr) { usersContainer.innerHTML = `<tr><td colspan="5" style="color:red">Fehler: ${lErr.message}</td></tr>`; return;}
 
         const usersMap = new Map();
 
@@ -218,8 +233,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        usersContainer.innerHTML = '';
         const sortedUsers = Array.from(usersMap.values()).sort((a,b) => a.email.localeCompare(b.email));
+
+        const badgeUsers = document.getElementById('badge-users');
+        if (badgeUsers) {
+            badgeUsers.textContent = sortedUsers.length;
+            badgeUsers.style.display = 'inline-block';
+            badgeUsers.style.background = '#888';
+        }
+
+        if (!usersContainer) return;
+        
+        if(lErr) { usersContainer.innerHTML = `<tr><td colspan="5" style="color:red">Fehler: ${lErr.message}</td></tr>`; return;}
+
+        if (blacklistData) {
+            blacklistData.forEach(b => {
+                if (usersMap.has(b.email)) {
+                    usersMap.get(b.email).status = b.action;
+                } else {
+                    usersMap.set(b.email, { id: 'N/A', name: b.username || 'Unbekannt (Nur in Blacklist)', email: b.email, status: b.action, listed_count: 0 });
+                }
+            });
+        }
+
+        usersContainer.innerHTML = '';
 
         if (sortedUsers.length === 0) {
             usersContainer.innerHTML = `<tr><td colspan="5" style="text-align:center;">Keine registrierten Nutzer gefunden.</td></tr>`;
@@ -293,6 +330,82 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadAdminListings();
     };
 
+    // --- 0. RESOURCE OVERVIEW ---
+    async function loadResourceOverview() {
+        try {
+            // A. Storage Stats
+            const bucket = 'listing-images';
+            // Wir listen den Inhalt des 'listings' Ordners
+            const { data: storageFiles, error: storageErr } = await supabase.storage.from(bucket).list('listings', { limit: 1000 });
+            
+            let totalSizeBytes = 0;
+            if (storageErr) {
+                console.error("Storage Error:", storageErr);
+            } else if (storageFiles) {
+                console.log(`Gefunden: ${storageFiles.length} Dateien im Ordner 'listings'`);
+                storageFiles.forEach(f => {
+                    // Supabase kann die Größe an verschiedenen Stellen haben
+                    const fileSize = f.size || (f.metadata ? f.metadata.size : 0) || 0;
+                    totalSizeBytes += fileSize;
+                });
+            }
+
+            // Falls 'listings' leer war, versuchen wir es sicherheitshalber auch im Root (vielleicht sind sie doch dort)
+            if (totalSizeBytes === 0) {
+                const { data: rootFiles } = await supabase.storage.from(bucket).list('', { limit: 1000 });
+                if (rootFiles) {
+                    rootFiles.forEach(f => {
+                        const fileSize = f.size || (f.metadata ? f.metadata.size : 0) || 0;
+                        totalSizeBytes += fileSize;
+                    });
+                }
+            }
+
+            const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
+            const limitMB = 1024; // 1GB Free Tier
+            const percent = Math.min(((totalSizeMB / limitMB) * 100), 100).toFixed(1);
+            const remainingMB = Math.max(limitMB - totalSizeMB, 0).toFixed(2);
+
+            const storageBar = document.getElementById('storage-bar');
+            const storagePercent = document.getElementById('storage-percent');
+            const storageUsed = document.getElementById('storage-used');
+            const storageLeft = document.getElementById('storage-left');
+
+            if (storageBar) {
+                storageBar.style.width = `${percent}%`;
+                if (percent > 90) storageBar.style.background = '#d32f2f';
+                else if (percent > 70) storageBar.style.background = '#ffa000';
+                else storageBar.style.background = 'var(--primary-color)';
+            }
+            if (storagePercent) storagePercent.textContent = `${percent}%`;
+            if (storageUsed) storageUsed.textContent = `${totalSizeMB} MB`;
+            if (storageLeft) storageLeft.textContent = `${remainingMB} MB`;
+
+            // B. Database Stats
+            const { data: allListings } = await supabase.from('listings').select('status, user_id');
+            const { count: reportsCount } = await supabase.from('reports').select('*', { count: 'exact', head: true });
+            const { count: blacklistCount } = await supabase.from('blacklist').select('*', { count: 'exact', head: true });
+
+            if (allListings) {
+                const total = allListings.length;
+                const active = allListings.filter(l => l.status === 'active').length;
+                const pending = allListings.filter(l => l.status === 'pending').length;
+                const uniqueUsers = new Set(allListings.map(l => l.user_id).filter(id => id)).size;
+
+                document.getElementById('stat-total-listings').textContent = total;
+                document.getElementById('stat-active-listings').textContent = active;
+                document.getElementById('stat-pending-listings').textContent = pending;
+                document.getElementById('stat-total-users').textContent = uniqueUsers;
+            }
+
+            if (reportsCount !== null) document.getElementById('stat-total-reports').textContent = reportsCount;
+            if (blacklistCount !== null) document.getElementById('stat-blacklist-count').textContent = blacklistCount;
+
+        } catch (err) {
+            console.error("Error loading overview:", err);
+        }
+    }
+
     // --- 5. SYSTEM-REINIGUNG ---
     const cleanupBtn = document.getElementById('cleanup-storage-btn');
     const cleanupFeedback = document.getElementById('cleanup-feedback');
@@ -360,6 +473,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Initital Load
+    loadResourceOverview();
     loadAdminListings();
     loadAdminReports();
     loadAdminUsers();

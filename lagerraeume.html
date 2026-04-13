@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lagerräume & Self-Storage | G-Immobilien</title>
-    <meta name="description" content="Brauchen Sie mehr Platz? Finden Sie trockene und sichere Lagerräume, Self-Storage Boxen oder Hobbykeller auf G-Immobilien – provisionsfrei.">
-    <!-- Google Fonts -->
+    <title>Lagerräume & Self-Storage | Platz-Börse</title>
+    <meta name="description" content="Brauchen Sie mehr Platz? Finden Sie trockene und sichere Lagerräume, Self-Storage Boxen oder Hobbykeller auf der Platz-Börse – provisionsfrei.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/banner.css">
 </head>
 <body>
-
+    <div class="side-banner side-banner-left"></div>
+    <div class="side-banner side-banner-right"></div>
+    <div class="fixed-header-bg"></div>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
             <ul class="nav-links">
-                <li><a href="index.html">Startseite</a></li>
-                <li class="dropdown">
-                    <a href="#" style="cursor: default;" class="active">Kategorien ▾</a>
+                <li class="dropdown category-item">
+                    <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="einstellplaetze.html">Einstellplätze</a>
-                        <a href="parkplaetze.html">Parkplätze</a>
-                        <a href="lagerraeume.html">Lagerräume</a>
-                        <a href="werkstaetten.html">Werkstätten</a>
-                        <a href="tierflaechen.html">Tierflächen</a>
-                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
+                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
+                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
+                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
+                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
+                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
+                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
                     </div>
                 </li>
+                <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
             </ul>
         </div>
     </header>
@@ -38,37 +43,22 @@
         <p style="text-align: center; margin-bottom: 3rem; color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
             Sicherer Platz für Akten, Möbel, Saisonartikel oder kleine Archive.
         </p>
-        
-        <!-- Dynamischer Container -->
-        <div id="listings-category-container" class="properties-grid" data-category="Lagerräume">
-            <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
-                <p>Lade Inserate aus der Datenbank...</p>
-            </div>
+        <div id="listings-category-container" class="properties-grid" data-category="Lagerräume & Container">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;"><p>Lade Inserate aus der Datenbank...</p></div>
         </div>
     </div>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-col" style="flex: 2;">
-                <h4>G-Immobilien</h4>
-                <p style="color: #aaa;">Spezialisiert auf extreme Nischenimmobilien.</p>
-            </div>
-            <div class="footer-col" style="flex: 2;">
-                <h4>Rechtliches</h4>
-                <ul>
-                    <li><a href="impressum.html">Impressum</a></li>
-                    <li><a href="datenschutz.html">Datenschutzerklärung</a></li>
-                    <li><a href="agb.html">AGB</a></li>
-                </ul>
-            </div>
+            <div class="footer-col" style="flex: 2;"><h4>Platz-Börse</h4><p style="color: #aaa;">Deutschlands und Österreichs führender Marktplatz für Spezial- und Nischenflächen.</p></div>
+            <div class="footer-col" style="flex: 2;"><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutzerklärung</a></li><li><a href="agb.html">AGB</a></li></ul></div>
         </div>
-        <div class="footer-bottom">
-            &copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.
-        </div>
+        <div class="footer-bottom">&copy; 2026 Vermietung Gutschelhofer. Alle Rechte vorbehalten.</div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
     <script src="js/listings-display.js"></script>
 </body>
 </html>
+
+

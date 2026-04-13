@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         listings.forEach(item => {
-            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80&w=800';
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
             const exposeUrl = `expose.html?id=${item.id}`;
             
             const currentDate = new Date();
@@ -107,7 +107,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 daysBadge = `<div style="position: absolute; top: 10px; right: 10px; background: rgba(200, 0, 0, 0.9); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); z-index: 10;">Läuft ab</div>`;
             }
-            
+            let priceDisplay = item.price_interval === 'Zu verschenken' ? 'Zu verschenken' : `${item.price} € / ${item.price_interval}`;
+
             const cardHtml = `
                 <div class="property-card" style="position: relative; cursor: pointer; transition: var(--transition); height: 100%;" onclick="window.location.href='${exposeUrl}'">
                     ${daysBadge}
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${imgUrl}" alt="${item.title}" class="property-img" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
                     </div>
                     <div class="property-content">
-                        <div class="property-price">${item.price} € / ${item.price_interval}</div>
+                        <div class="property-price">${priceDisplay}</div>
                         <h3 class="property-title" style="font-size: 1.1rem; margin-bottom: 0.8rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">${item.title}</h3>
                         <div class="property-details" style="margin-bottom: 1rem; padding: 0.5rem 0;">
                             <div class="detail-item" style="font-size: 0.75rem;">📍 ${item.zip} ${item.city}</div>

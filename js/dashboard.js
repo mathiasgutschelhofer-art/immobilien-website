@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.userListingsData = myData;
 
         myData.forEach(item => {
-            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/600x400/ddd/555?text=Kein+Bild';
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'assets/no-preview.svg';
             let statusBadge = item.status === 'active' ? `<span style="background: green; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">Aktiv / Online</span>` :
                               item.status === 'pending' ? `<span style="background: orange; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">Überprüfung ausstehend</span>` :
                               item.status === 'rejected' ? `<span style="background: red; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">Abgelehnt</span>` :
@@ -81,12 +81,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 daysTxt = diffDays > 0 ? `Noch ${diffDays} Tage aktiv` : `Läuft ab`;
             }
 
+            let priceDisplay = item.price_interval === 'Zu verschenken' ? 'Zu verschenken' : `${item.price} € / ${item.price_interval}`;
+
             container.innerHTML += `
                 <div class="property-card" style="display: flex; flex-direction: column; position: relative;">
                     <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; z-index: 10;">${daysTxt}</div>
                     <img src="${imgUrl}" alt="Bild" class="property-img">
                     <div class="property-content" style="flex-grow: 1; display: flex; flex-direction: column;">
-                        <div class="property-price">${item.price} € / ${item.price_interval}</div>
+                        <div class="property-price">${priceDisplay}</div>
                         <h3 class="property-title">${item.title}</h3>
                         <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">${statusBadge}</p>
                         <div class="property-details" style="margin-bottom: 1rem;">
@@ -188,7 +190,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Modal Felder befüllen
         document.getElementById('edit-listing-id').value = listing.id;
         document.getElementById('list-title').value = listing.title;
-        document.getElementById('list-category').value = listing.category;
+        
+        // Neue Kategoriewahl
+        document.getElementById('list-parent-category').value = listing.parent_category || '';
+        updateSubcategories(); // Trigger UI Update
+        if (listing.subcategory) {
+            document.getElementById('list-subcategory').value = listing.subcategory;
+        }
+
+        // Maße befüllen (wenn vorhanden)
+        document.getElementById('list-length').value = listing.length || '';
+        document.getElementById('list-width').value = listing.width || '';
+        document.getElementById('list-height').value = listing.height || '';
+        
         const countryVal = listing.country || 'Österreich';
         const countryEl = document.getElementById('list-country');
         if(Array.from(countryEl.options).some(opt => opt.value === countryVal)) {
@@ -245,6 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('submit-listing-btn').textContent = "Inserat zur Freigabe einreichen";
         document.getElementById('preview-container').innerHTML = '';
         validFiles = [];
+        byPassImageCheck = false; // Reset warning flag
         modal.style.display = 'flex'; 
     });
     closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
@@ -252,20 +267,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(e.target === modal) modal.style.display = 'none'; 
     });
 
-    // --- 2. DYNAMISCHE KATEGORIEN ---
-    const categorySelect = document.getElementById('list-category');
-    const dropdownLinks = document.querySelectorAll('.dropdown-content a');
-    dropdownLinks.forEach(link => {
-        const option = document.createElement('option');
-        option.value = link.textContent.trim();
-        option.textContent = link.textContent.trim();
-        categorySelect.appendChild(option);
-    });
+    // --- 2. DYNAMISCHE KATEGORIEN & MAẞE ---
+    const parentSelect = document.getElementById('list-parent-category');
+    const subWrapper = document.getElementById('subcategory-wrapper');
+    const subSelect = document.getElementById('list-subcategory');
+    const dimWrapper = document.getElementById('dimensions-wrapper');
+    const labelHeight = document.getElementById('label-height');
+
+    const subcategoryMap = {
+        "Plätze für Fahrzeuge": [
+            "Unüberdachte Plätze",
+            "Überdachte Plätze: Garagen",
+            "Überdachte Plätze: Carports",
+            "Überdachte Plätze: Sonstige"
+        ],
+        "Lagerräume & Container": ["Lagerraum", "Container", "Kellerabteil", "Dachboden"],
+        "Werkstätten & Hobbyräume": ["Werkstatt", "Hobbyraum", "Atelier"],
+        "Tierflächen (Weiden, Ställe)": ["Pferdebox", "Offenstall", "Weidefläche"],
+        "Garten & Outdoorflächen": ["Kleingarten", "Grillplatz", "Lagerplatz"]
+    };
+
+    function updateSubcategories() {
+        const parent = parentSelect.value;
+        subSelect.innerHTML = '<option value="">Bitte wählen...</option>';
+        
+        if (parent && subcategoryMap[parent]) {
+            subcategoryMap[parent].forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub;
+                opt.textContent = sub;
+                subSelect.appendChild(opt);
+            });
+            subWrapper.style.display = 'block';
+            subSelect.required = true;
+
+            // Maße einblenden für Fahrzeuge und Lagerräume
+            if (parent === "Plätze für Fahrzeuge" || parent === "Lagerräume & Container") {
+                dimWrapper.style.display = 'block';
+                labelHeight.textContent = parent === "Plätze für Fahrzeuge" ? "Einfahrtshöhe / Höhe (in m)" : "Raumhöhe (in m)";
+            } else {
+                dimWrapper.style.display = 'none';
+            }
+        } else {
+            subWrapper.style.display = 'none';
+            subSelect.required = false;
+            dimWrapper.style.display = 'none';
+        }
+    }
+
+    parentSelect.addEventListener('change', updateSubcategories);
+    window.updateSubcategories = updateSubcategories; // Export for edit mode
 
     const descArea = document.getElementById('list-desc');
     const charCountNode = document.getElementById('char-count');
     descArea.addEventListener('input', () => {
         charCountNode.textContent = `${descArea.value.length} / 2000`;
+    });
+
+    const priceInput = document.getElementById('list-price');
+    const intervalSelect = document.getElementById('list-interval');
+    intervalSelect.addEventListener('change', () => {
+        if (intervalSelect.value === 'Zu verschenken') {
+            priceInput.value = 0;
+            priceInput.readOnly = true;
+            priceInput.style.backgroundColor = '#eef2f5';
+        } else {
+            if (priceInput.value === '0') priceInput.value = '';
+            priceInput.readOnly = false;
+            priceInput.style.backgroundColor = '';
+        }
     });
 
     // --- 3. PLZ ZU ORT AUTOFILL ---
@@ -443,9 +513,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = document.getElementById('new-listing-form');
     const feedback = document.getElementById('form-feedback-msg');
     const submitBtn = document.getElementById('submit-listing-btn');
+    
+    // Warn-Modal Elemente
+    const warningModal = document.getElementById('image-warning-modal');
+    const warningAddBtn = document.getElementById('warning-add-images-btn');
+    const warningContinueBtn = document.getElementById('warning-continue-anyway-btn');
+    let byPassImageCheck = false;
+
+    if (warningAddBtn) {
+        warningAddBtn.addEventListener('click', () => {
+            if (warningModal) warningModal.style.display = 'none';
+            byPassImageCheck = false;
+        });
+    }
+
+    if (warningContinueBtn) {
+        warningContinueBtn.addEventListener('click', () => {
+            if (warningModal) warningModal.style.display = 'none';
+            byPassImageCheck = true;
+            form.requestSubmit(); // Erneut triggern, diesmal mit Bypass
+        });
+    }
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        const editId = document.getElementById('edit-listing-id').value;
+        
+        // --- BILDER WARNUNG CHECK ---
+        if (!byPassImageCheck) {
+            let hasImages = validFiles.length > 0;
+            
+            // Wenn im Edit-Modus, prüfen ob bereits Bilder existieren
+            if (!hasImages && editId) {
+                const listing = window.userListingsData?.find(l => l.id === editId);
+                if (listing && listing.images && listing.images.length > 0) {
+                    hasImages = true;
+                }
+            }
+            
+            if (!hasImages) {
+                if (warningModal) {
+                    warningModal.style.display = 'flex';
+                    return; // Stoppe hier, Modal übernimmt
+                } else {
+                    const wantToContinue = confirm("Schade, keine Bilder? Inserate mit mindestens einem Bild werden deutlich häufiger geklickt! Möchten Sie trotzdem ohne Bild fortfahren?");
+                    if (!wantToContinue) return;
+                    byPassImageCheck = true;
+                }
+            }
+        }
         
         submitBtn.disabled = true;
         submitBtn.textContent = "Lade hoch... Bitte warten.";
@@ -480,7 +597,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const title = document.getElementById('list-title').value;
-            const category = document.getElementById('list-category').value;
+            const parentCat = document.getElementById('list-parent-category').value;
+            const subCat = document.getElementById('list-subcategory').value;
             const country = document.getElementById('list-country').value;
             const street = document.getElementById('list-street').value;
             const zip = document.getElementById('list-zip').value;
@@ -488,10 +606,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             const price = parseFloat(document.getElementById('list-price').value);
             const interval = document.getElementById('list-interval').value;
             const desc = document.getElementById('list-desc').value;
+            
+            // Neue Felder
+            const length = document.getElementById('list-length').value ? parseFloat(document.getElementById('list-length').value) : null;
+            const width = document.getElementById('list-width').value ? parseFloat(document.getElementById('list-width').value) : null;
+            const height = document.getElementById('list-height').value ? parseFloat(document.getElementById('list-height').value) : null;
 
             const listingData = {
                 title: title,
-                category: category,
+                category: subCat || parentCat, // Fallback für alte Logik
+                parent_category: parentCat,
+                subcategory: subCat,
+                length: length,
+                width: width,
+                height: height,
                 country: country,
                 street: street,
                 zip: zip,
@@ -568,9 +696,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Automatic modal open if URL has ?action=new-listing
+    // Automatic modal open if URL has ?action=new-listing or sessionStorage has pending action
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('action') === 'new-listing') {
+    if (urlParams.get('action') === 'new-listing' || sessionStorage.getItem('pendingAction') === 'new-listing') {
+        sessionStorage.removeItem('pendingAction');
         const createBtn = document.getElementById('open-listing-modal-btn');
         if (createBtn) {
             // Slight delay ensures rendering is fully complete

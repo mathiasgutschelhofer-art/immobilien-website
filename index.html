@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G-Immobilien | Der Marktplatz für Spezial- & Nischenimmobilien</title>
-    <meta name="description" content="Finden Sie Einstellplätze, Garagen, Pferdeboxen und Freiflächen auf G-Immobilien. Der führende Marktplatz für extreme Nischenimmobilien – seriös, einfach und provisionsfrei.">
+    <title>Platz-Börse | Die Nummer 1 für Nischen- & Spezialflächen</title>
+    <meta name="description" content="Finden Sie Ihren Platz in der Platz-Börse – dem führenden Marktplatz für Stellplätze, Lager, Pferdeboxen und Spezialimmobilien in Österreich und Deutschland.">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/banner.css">
     <style>
         .category-section { margin-bottom: 5rem; }
         .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; }
@@ -17,28 +19,36 @@
     </style>
 </head>
 <body>
+    <!-- Side Banners -->
+    <div class="side-banner side-banner-left"></div>
+    <div class="side-banner side-banner-right"></div>
 
+    <div class="fixed-header-bg"></div>
     <!-- Header & Navigation -->
     <header>
         <div class="navbar">
-            <a href="index.html" class="logo-container">
-                <img src="assets/logo.png" alt="G-Immobilien Logo" class="logo-image" onerror="this.src='https://placehold.co/200x50/0d47a1/ffffff?text=G-Immobilien'">
+            <a href="index.html" class="logo-container" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                <img src="assets/logo.svg?v=2" alt="Platz-Börse Logo" class="logo-image" style="height: 48px; width: auto;">
             </a>
+            
             <div class="menu-toggle" id="mobile-menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
+
             <ul class="nav-links">
-                <li class="dropdown">
+                <li class="dropdown category-item">
                     <a href="#" style="cursor: default;">Kategorien ▾</a>
                     <div class="dropdown-content">
-                        <a href="einstellplaetze.html">Einstellplätze</a>
-                        <a href="parkplaetze.html">Parkplätze</a>
-                        <a href="lagerraeume.html">Lagerräume</a>
-                        <a href="werkstaetten.html">Werkstätten</a>
-                        <a href="tierflaechen.html">Tierflächen</a>
-                        <a href="outdoorflaechen.html">Garten & Outdoor</a>
+                        <a href="search.html?kategorie=Plätze für Fahrzeuge"><b>Plätze für Fahrzeuge</b></a>
+                        <a href="search.html?kategorie=Unüberdachte Plätze" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Unüberdachte Plätze</a>
+                        <a href="search.html?kategorie=Überdachte Plätze: Garagen" style="padding-left: 2rem !important; font-size: 0.9rem;">└ Garagen & Carports</a>
+                        
+                        <a href="search.html?kategorie=Lagerräume & Container">Lagerräume & Container</a>
+                        <a href="search.html?kategorie=Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</a>
+                        <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Tierflächen</a>
+                        <a href="search.html?kategorie=Garten & Outdoorflächen">Garten & Outdoor</a>
                     </div>
                 </li>
                 <li id="auth-nav-item"><a href="login.html" class="btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Login / Registrieren</a></li>
@@ -47,36 +57,48 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(13, 71, 161, 0.8)), url('assets/hero-bg.jpg') center/cover no-repeat, radial-gradient(circle at top right, #1e3a8a, #0d47a1);">
+    <section class="hero banner-reveal-hero hero-main">
+        <div class="hero-bg-animated"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Der Marktplatz für die extremen Nischen</h1>
-            <p>Einstellplätze, Garagen, Pferdeboxen und Freiflächen. Finden Sie genau das, was auf anderen Plattformen gnadenlos untergeht.</p>
-            <div class="search-container" style="background: rgba(255,255,255,0.95); padding: 1.5rem; border-radius: var(--border-radius); max-width: 900px; margin: 3rem auto; box-shadow: 0 20px 40px rgba(0,0,0,0.25); backdrop-filter: blur(10px);">
+            <h1 class="animate-fade-in delay-1">Finden Sie Ihren Platz.</h1>
+            <p class="animate-fade-in delay-2">Ob Garage, Lagerfläche, Pferdebox oder Freifläche – die Platz-Börse ist der führende Marktplatz für alles, was auf anderen Portalen keinen Platz findet.</p>
+            
+            <div class="search-container glass-search animate-fade-in delay-3" style="padding: 1.5rem; border-radius: var(--border-radius); max-width: 1000px; margin: 3rem auto;">
                 <form action="search.html" method="GET" id="hero-search-form" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: stretch;">
-                    <div style="flex: 2; min-width: 250px; position: relative;">
+                    <div style="flex: 2; min-width: 200px; position: relative;">
                         <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">📍</span>
-                        <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #ddd; background: white; border-radius: 50px; font-size: 1rem; outline: none;">
+                        <input type="text" name="ort" id="search-location" placeholder="Ort oder PLZ..." style="width: 100%; padding: 1rem 1rem 1rem 3.5rem; border: none; background: white; border-radius: 50px; font-size: 1rem; outline: none; box-sizing: border-box; height: 100%;">
                     </div>
                     <div style="flex: 2; min-width: 200px; position: relative;">
                         <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏷️</span>
-                        <select name="kategorie" id="search-category" style="width: 100%; padding: 1rem 2rem 1rem 3rem; border: 2px solid #ddd; background: white; border-radius: 50px; font-size: 1rem; appearance: none; cursor: pointer;">
+                        <select name="kategorie" id="search-category" style="width: 100%; padding: 1rem 2rem 1rem 3.5rem; border: none; background: white; border-radius: 50px; font-size: 1rem; appearance: none; cursor: pointer; box-sizing: border-box; height: 100%;">
                             <option value="">Alle Kategorien</option>
-                            <option value="Einstellplätze">Einstellplätze</option>
-                            <option value="Parkplätze">Parkplätze</option>
-                            <option value="Lagerräume">Lagerräume</option>
-                            <option value="Werkstätten">Werkstätten</option>
-                            <option value="Tierflächen">Tierflächen</option>
-                            <option value="Garten & Outdoor">Garten & Outdoor</option>
+                            <option value="Plätze für Fahrzeuge">Plätze für Fahrzeuge</option>
+                            <option value="Lagerräume & Container">Lagerräume & Container</option>
+                            <option value="Werkstätten & Hobbyräume">Werkstätten & Hobbyräume</option>
+                            <option value="Tierflächen (Weiden, Ställe)">Tierflächen</option>
+                            <option value="Garten & Outdoorflächen">Garten & Outdoor</option>
+                        </select>
+                    </div>
+                    <div style="flex: 2; min-width: 150px; position: relative;">
+                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🔑</span>
+                        <select name="transaktion" id="search-transaction" style="width: 100%; padding: 1rem 2rem 1rem 3.5rem; border: none; background: white; border-radius: 50px; font-size: 1rem; appearance: none; cursor: pointer; box-sizing: border-box; height: 100%;">
+                            <option value="">Alle Optionen</option>
+                            <option value="Mieten">Miete / Pacht</option>
+                            <option value="Kaufen">Kauf</option>
+                            <option value="Verschenken">Zu verschenken</option>
                         </select>
                     </div>
                     <div style="flex: 1; min-width: 150px;">
-                        <button type="submit" class="btn btn-primary" style="padding: 1rem; width: 100%; border-radius: 50px;">Jetzt Suchen</button>
+                        <button type="submit" class="btn btn-primary" style="padding: 1rem; width: 100%; border-radius: 50px; height: 100%; box-sizing: border-box;">Suchen</button>
                     </div>
                 </form>
             </div>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-                <a href="register.html" id="provider-cta-btn" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: 700; font-size: 1.05rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4); border: 2px solid rgba(255,255,255,0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(255, 152, 0, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255, 152, 0, 0.4)';">
-                    <span style="font-size: 1.2rem;">✨</span> Sie sind Anbieter? Jetzt kostenlos Inserat erstellen!
+            
+            <div class="animate-fade-in delay-3" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                <a href="register.html" id="provider-cta-btn" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: 1.05rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 10px 20px rgba(255, 152, 0, 0.3);" onclick="sessionStorage.setItem('pendingAction', 'new-listing');">
+                    <span>✨</span> Sie sind Anbieter? Jetzt kostenlos Inserat erstellen!
                 </a>
             </div>
         </div>
@@ -85,130 +107,75 @@
     <!-- Immobilien Kategorien -->
     <section class="container" style="padding-top: 4rem;">
         
-        <!-- Einstellplaetze -->
+        <!-- Plätze für Fahrzeuge -->
         <div class="category-section">
             <div class="category-header">
-                <h2>Einstellplätze</h2>
-                <a href="einstellplaetze.html">Alle ansehen &rarr;</a>
+                <h2>Plätze für Fahrzeuge</h2>
+                <a href="search.html?kategorie=Plätze für Fahrzeuge">Alle ansehen &rarr;</a>
             </div>
             <div class="carousel-wrapper">
                 <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Einstellplätze">
-                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                <div class="carousel-track dynamic-category-grid" data-category="Plätze für Fahrzeuge">
+                    <div style="padding: 2rem; color: #888;">Lade Fahrzeugplätze...</div>
                 </div>
                 <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
-        <!-- Parkplätze -->
+        <!-- Lagerräume & Container -->
         <div class="category-section">
             <div class="category-header">
-                <h2>Parkplätze</h2>
-                <a href="parkplaetze.html">Alle ansehen &rarr;</a>
+                <h2>Lagerräume & Container</h2>
+                <a href="search.html?kategorie=Lagerräume & Container">Alle ansehen &rarr;</a>
             </div>
             <div class="carousel-wrapper">
                 <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Parkplätze">
-                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                <div class="carousel-track dynamic-category-grid" data-category="Lagerräume & Container">
+                    <div style="padding: 2rem; color: #888;">Lade Lagerräume...</div>
                 </div>
                 <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
 
-        <!-- Lagerräume -->
+        <!-- Tierflächen -->
         <div class="category-section">
             <div class="category-header">
-                <h2>Lagerräume</h2>
-                <a href="lagerraeume.html">Alle ansehen &rarr;</a>
+                <h2>Tierflächen (Weiden, Ställe)</h2>
+                <a href="search.html?kategorie=Tierflächen (Weiden, Ställe)">Alle ansehen &rarr;</a>
             </div>
             <div class="carousel-wrapper">
                 <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Lagerräume">
-                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
+                <div class="carousel-track dynamic-category-grid" data-category="Tierflächen (Weiden, Ställe)">
+                    <div style="padding: 2rem; color: #888;">Lade Tierflächen...</div>
                 </div>
                 <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
             </div>
         </div>
-        
-        <!-- Werkstätten -->
-        <div class="category-section">
-            <div class="category-header">
-                <h2>Werkstätten</h2>
-                <a href="werkstaetten.html">Alle ansehen &rarr;</a>
-            </div>
-            <div class="carousel-wrapper">
-                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Werkstätten">
-                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
-                </div>
-                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
-            </div>
-        </div>
-
-        <!-- Pferdeboxen & Tierflächen -->
-        <div class="category-section">
-            <div class="category-header">
-                <h2>Pferdeboxen & Tierflächen</h2>
-                <a href="tierflaechen.html">Alle ansehen &rarr;</a>
-            </div>
-            <div class="carousel-wrapper">
-                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Tierflächen">
-                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
-                </div>
-                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
-            </div>
-        </div>
-
-        <!-- Garten & Outdoorflächen -->
-        <div class="category-section">
-            <div class="category-header">
-                <h2>Garten & Outdoorflächen</h2>
-                <a href="outdoorflaechen.html">Alle ansehen &rarr;</a>
-            </div>
-            <div class="carousel-wrapper">
-                <button class="carousel-btn prev" style="display: none;">&lsaquo;</button>
-                <div class="carousel-track dynamic-category-grid" data-category="Garten & Outdoor">
-                    <div style="padding: 2rem; color: #888;">Lade Inserate...</div>
-                </div>
-                <button class="carousel-btn next" style="display: none;">&rsaquo;</button>
-            </div>
-        </div>
-
     </section>
 
     <!-- Mission Section -->
     <div class="mission-container">
-        <!-- Dekorative Hintergrund-Elemente -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; pointer-events: none;">
-            <div style="position: absolute; top: -20%; left: -10%; width: 50%; height: 80%; background: radial-gradient(circle, rgba(24,119,242,0.6) 0%, rgba(13,71,161,0) 70%); border-radius: 50%; filter: blur(60px);"></div>
-            <div style="position: absolute; bottom: -20%; right: -10%; width: 50%; height: 80%; background: radial-gradient(circle, rgba(255,152,0,0.2) 0%, rgba(13,71,161,0) 70%); border-radius: 50%; filter: blur(60px);"></div>
-        </div>
-        
-        <section class="container" style="padding: 6rem 0; position: relative; z-index: 1;">
+        <section class="container" style="padding: 6rem 5%; position: relative; z-index: 1;">
             <div style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 800px; margin: 0 auto 5rem auto;">
-                <span style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: white; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 2rem; display: inline-block; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Unsere Mission</span>
-                <h2 style="font-size: 3.5rem; color: white; margin-bottom: 1.5rem; line-height: 1.15; font-weight: 800;">Vermietung abseits des Mainstreams. <br><span style="background: -webkit-linear-gradient(45deg, #FFB74D, #FF9800); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Die Nische ist unser Zuhause.</span></h2>
-                <p style="font-size: 1.25rem; color: rgba(255,255,255,0.85); line-height: 1.7; font-weight: 400;">Herkömmliche Portale ignorieren Parkplätze, Weideflächen und Hobbyräume völlig. Wir geben diesen versteckten Schätzen eine echte Bühne – übersichtlich, sicher und komplett kostenlos.</p>
+                <h2 style="font-size: 3.5rem; color: white; margin-bottom: 1.5rem; line-height: 1.15; font-weight: 800;">Vermietung abseits des Mainstreams. <br><span style="color: #FF9800;">Die Nische ist unser Zuhause.</span></h2>
+                <p style="font-size: 1.25rem; color: rgba(255,255,255,0.85); line-height: 1.7;">Herkömmliche Portale ignorieren Parkplätze, Weideflächen und Hobbyräume völlig. Wir geben diesen versteckten Schätzen eine echte Bühne – übersichtlich, sicher und komplett kostenlos.</p>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem;">
-                <div style="background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 3rem 2.5rem; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s ease; cursor: default; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" onmouseover="this.style.transform='translateY(-15px)'; this.style.background='rgba(255, 255, 255, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255, 255, 255, 0.06)';">
-                    <div style="font-size: 2.5rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02)); width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 5px rgba(255,255,255,0.1);">🛡️</div>
-                    <h3 style="font-size: 1.6rem; color: white; margin-bottom: 1.2rem; font-weight: 700;">Geprüfte Qualität</h3>
-                    <p style="color: rgba(255,255,255,0.7); line-height: 1.6; font-size: 1.05rem;">Keine Fake-Inserate. Kein Spam. Jedes Inserat durchläuft einen händischen Freigabeprozess unseres Admins, um unseren hohen Qualitätsstandard für Sie zu wahren.</p>
+            <div class="features">
+                <div class="feature-box">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Geprüfte Qualität</h3>
+                    <p>Keine Fake-Inserate. Jedes Inserat durchläuft einen händischen Freigabeprozess unseres Admins.</p>
                 </div>
-                
-                <div style="background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 3rem 2.5rem; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s ease; cursor: default; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" onmouseover="this.style.transform='translateY(-15px)'; this.style.background='rgba(255, 255, 255, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255, 255, 255, 0.06)';">
-                    <div style="font-size: 2.5rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02)); width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 5px rgba(255,255,255,0.1);">💸</div>
-                    <h3 style="font-size: 1.6rem; color: white; margin-bottom: 1.2rem; font-weight: 700;">100% Gebührenfrei</h3>
-                    <p style="color: rgba(255,255,255,0.7); line-height: 1.6; font-size: 1.05rem;">Warum für etwas zahlen, das selbstverständlich sein sollte? Bei uns fallen weder Einstell- noch Vermittlungsgebühren an – komplett fair und transparent.</p>
+                <div class="feature-box">
+                    <div class="feature-icon">💸</div>
+                    <h3>100% Gebührenfrei</h3>
+                    <p>Bei uns fallen weder Einstell- noch Vermittlungsgebühren an – komplett fair und transparent.</p>
                 </div>
-
-                <div style="background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 3rem 2.5rem; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s ease; cursor: default; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" onmouseover="this.style.transform='translateY(-15px)'; this.style.background='rgba(255, 255, 255, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255, 255, 255, 0.06)';">
-                    <div style="font-size: 2.5rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02)); width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 5px rgba(255,255,255,0.1);">🎯</div>
-                    <h3 style="font-size: 1.6rem; color: white; margin-bottom: 1.2rem; font-weight: 700;">Radikaler Fokus</h3>
-                    <p style="color: rgba(255,255,255,0.7); line-height: 1.6; font-size: 1.05rem;">Keine Mietwohnungen, keine Reihenhäuser. Wir sind entschlossen, der Marktführer ausschließlich für Spezial- und Outdoorflächen zu werden.</p>
+                <div class="feature-box">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Radikaler Fokus</h3>
+                    <p>Wir sind entschlossen, der Marktführer ausschließlich für Spezial- und Outdoorflächen zu werden.</p>
                 </div>
             </div>
         </section>
@@ -220,7 +187,7 @@
         <p style="font-size: 1.15rem; line-height: 1.7; color: #555; margin-bottom: 2.5rem;">
             Wir legen großen Wert darauf, diesen Marktplatz <strong>völlig kostenlos und ohne störende Werbung</strong> anzubieten. Dennoch entstehen uns laufende Kosten für den Serverbetrieb, die Wartung und die Weiterentwicklung der Plattform.
             <br><br>
-            Wenn Ihnen G-Immobilien hilft und Sie unser Projekt unterstützen möchten, um die Seite langfristig aufrechtzuerhalten, freuen wir uns riesig über eine kleine, freiwillige Unterstützung.
+            Wenn Ihnen die Platz-Börse hilft und Sie unser Projekt unterstützen möchten, um die Seite langfristig aufrechtzuerhalten, freuen wir uns riesig über eine kleine, freiwillige Unterstützung.
         </p>
         <a href="https://paypal.me/gimmobilen" target="_blank" rel="noopener noreferrer" class="btn" style="background-color: #003087; color: white; padding: 1.2rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 1.15rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.2s, background-color 0.2s; box-shadow: 0 4px 15px rgba(0, 48, 135, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.backgroundColor='#002366';" onmouseout="this.style.transform='translateY(0)'; this.style.backgroundColor='#003087';">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
@@ -232,25 +199,13 @@
         </a>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-col" style="flex: 2;">
-                <h4>G-Immobilien</h4>
+                <h4>Platz-Börse</h4>
                 <p style="color: #aaa;">Der Marktplatz spezialisiert auf absolute Nischenimmobilien.</p>
             </div>
             <div class="footer-col" style="flex: 2;">
-                <h4>Kategorien</h4>
-                <ul>
-                    <li><a href="einstellplaetze.html">Einstellplätze</a></li>
-                    <li><a href="parkplaetze.html">Parkplätze</a></li>
-                    <li><a href="lagerraeume.html">Lagerräume</a></li>
-                    <li><a href="werkstaetten.html">Werkstätten</a></li>
-                    <li><a href="tierflaechen.html">Tierflächen</a></li>
-                    <li><a href="outdoorflaechen.html">Garten & Outdoor</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
                 <h4>Rechtliches</h4>
                 <ul>
                     <li><a href="impressum.html">Impressum</a></li>
